@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="facebook_app_id">969884187045361</string>
+    <string name="fb_login_protocol_scheme">fb969884187045361</string>
+    <string name="facebook_client_token">48ab467c53f37aef7019743613488094</string>
+    <string name="app_name">BookinApp</string>
+
+
+</resources>
