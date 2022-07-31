@@ -106,7 +106,7 @@ class _BlogDetailedCardState extends State<BlogDetailedCard> {
 
     final String formatted = formatter!.format(widget.item!.date!);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
           Container(

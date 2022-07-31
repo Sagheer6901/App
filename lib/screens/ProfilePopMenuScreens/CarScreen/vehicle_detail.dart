@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:untitled/functions/app_config.dart';
@@ -176,7 +177,7 @@ class _VehicleDetailsState extends State<VehicleDetails>
                           Radius.circular(20),
                         ),
                         child: Image.network(
-                          "${AppConfig.srcLink}${widget.item!.image}",
+                          "${AppConfig.srcLink}${widget.item!.gallery}",
                           height: 120,
                           width: double.infinity,
                           fit: BoxFit.fill,
@@ -211,7 +212,7 @@ class _VehicleDetailsState extends State<VehicleDetails>
                           Radius.circular(20),
                         ),
                         child: Image.network(
-                          "${AppConfig.srcLink}${widget.item!.image}",
+                          "${AppConfig.srcLink}${widget.item!.gallery}",
                           height: 120,
                           width: double.infinity,
                           fit: BoxFit.fill,
@@ -246,7 +247,7 @@ class _VehicleDetailsState extends State<VehicleDetails>
                           Radius.circular(20),
                         ),
                         child: Image.network(
-                          "${AppConfig.srcLink}${widget.item!.image}",
+                          "${AppConfig.srcLink}${widget.item!.gallery}",
                           height: 120,
                           width: double.infinity,
                           fit: BoxFit.fill,
@@ -371,18 +372,19 @@ class _VehicleDetailsState extends State<VehicleDetails>
                   tabs: <Widget>[
                     Tab(
                       child: Text(
+                        "Details",
+                        style:
+                        TextStyle(fontFamily: AppConfig.fontFamilyRegular),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
                         "Review",
                         style:
                             TextStyle(fontFamily: AppConfig.fontFamilyRegular),
                       ),
                     ),
-                    Tab(
-                      child: Text(
-                        "Details",
-                        style:
-                            TextStyle(fontFamily: AppConfig.fontFamilyRegular),
-                      ),
-                    ),
+
                   ],
                 ),
               ),
@@ -390,11 +392,14 @@ class _VehicleDetailsState extends State<VehicleDetails>
                 child: TabBarView(
                   controller: _tabController,
                   children: <Widget>[
-                    totalRate!=null?Rating(service: service,organization: organization,friendliness: friendliness,areaExpert: areaExpert,safety: safety,):Center(child: SizedBox(),),
-                    CarDetails(
-                      products: WebServices.carItems(),
-                      item: this.widget.item,
+                    SingleChildScrollView(
+                      child: CarDetails(
+                        products: WebServices.carItems(),
+                        item: this.widget.item,
+                      ),
                     ),
+                    totalRate!=null?Rating(service: service,organization: organization,friendliness: friendliness,areaExpert: areaExpert,safety: safety,):Center(child: SizedBox(),),
+
                   ],
                 ),
               ),
@@ -1290,7 +1295,7 @@ class CarReviewCard extends StatelessWidget {
                     backgroundColor: Colors.black12,
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      '${AppConfig.srcLink}${item!.image}',
+                      '${item!.image}'.contains('http')?'${item!.image}':'${AppConfig.srcLink}${item!.image}',
                     ),
                   ),
                   SizedBox(
@@ -1363,45 +1368,49 @@ class CarDetails extends StatelessWidget {
   CarDetails({Key? key, this.products, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final maxLines= 5;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Lorem ipsum dollar",
-            style: TextStyle(
-                fontSize: AppConfig.f3,
-                color: AppConfig.tripColor,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppConfig.fontFamilyRegular),
-            textScaleFactor: 1,
-          ),
+          // Text(
+          //   "Lorem ipsum dollar",
+          //   style: TextStyle(
+          //       fontSize: AppConfig.f3,
+          //       color: AppConfig.tripColor,
+          //       fontWeight: FontWeight.bold,
+          //       fontFamily: AppConfig.fontFamilyRegular),
+          //   textScaleFactor: 1,
+          // ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
-          Text(
+          ReadMoreText(
             "${item!.description}",
             // overflow: TextOverflow.ellipsis,
-            // maxLines: 7,
+            trimLines: maxLines!=null?maxLines:2,
+            trimCollapsedText: 'Read More',
+            trimExpandedText: 'Read Less',
             style: TextStyle(
                 fontSize: AppConfig.f4,
                 color: AppConfig.textColor,
                 fontFamily: AppConfig.fontFamilyRegular),
             textScaleFactor: 1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                "More",
-                style: TextStyle(
-                    color: AppConfig.carColor,
-                    fontFamily: AppConfig.fontFamilyRegular),
-                textScaleFactor: 1,
-              )
-            ],
-          )
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //       "More",
+          //       style: TextStyle(
+          //           color: AppConfig.carColor,
+          //           fontFamily: AppConfig.fontFamilyRegular),
+          //       textScaleFactor: 1,
+          //     )
+          //   ],
+          // )
         ],
       ),
     );

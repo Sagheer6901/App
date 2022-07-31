@@ -78,8 +78,8 @@ class WebViewExample extends StatefulWidget {
   var type;
 
   var pMethod,orderIds,totalAmount;
-
-   WebViewExample({Key? key, this.cookieManager,this.url,this.type,this.pMethod,this.orderIds,this.totalAmount}) : super(key: key);
+  var ordersId,orderTypes;
+   WebViewExample({Key? key, this.cookieManager,this.url,this.type,this.pMethod,this.orderIds,this.totalAmount,this.orderTypes,this.ordersId}) : super(key: key);
 
   final CookieManager? cookieManager;
   var url;
@@ -112,105 +112,142 @@ class _WebViewExampleState extends State<WebViewExample> {
         //     // SampleMenu(_controller.future, widget.cookieManager),
         //   ],
         // ),
-        body: WebView(
-          initialUrl: '${widget.url}',
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-          },
-          onProgress: (int progress) {
-            print('WebView is loading (progress : $progress%)');
-          },
-          javascriptChannels: <JavascriptChannel>{
-            _toasterJavascriptChannel(context),
-          },
-          navigationDelegate: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              print('blocking navigation to $request}');
-              return NavigationDecision.prevent;
-            }
-            print('allowing navigation to $request');
-            return NavigationDecision.navigate;
-          },
-          onPageStarted: (String url) {
-            print('Page started loading: $url');
-          },
-          onPageFinished: (String url)  async {
-            var fUrl;
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) =
-
-            if(url.contains("showOrderStatus")){
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 40),
+          child: WebView(
+            initialUrl: '${widget.url}',
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+            onProgress: (int progress) {
+              print('WebView is loading (progress : $progress%)');
+            },
+            javascriptChannels: <JavascriptChannel>{
+              _toasterJavascriptChannel(context),
+            },
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                print('blocking navigation to $request}');
+                return NavigationDecision.prevent;
+              }
+              print('allowing navigation to $request');
+              return NavigationDecision.navigate;
+            },
+            onPageStarted: (String url) {
+              print('Page started loading: $url');
+            },
+            onPageFinished: (String url)  async {
+              var fUrl;
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) =
+              print("webview ${widget.orderIds} ${widget.orderTypes}");
+              if(url.contains("showOrderStatus")){
     var orders, type,payPalUrl;
+    var orderId,pStatus,msg,amount;
+
     if (widget.type == "car" || widget.type == "hotel" || widget.type == "guide") {
       orders = "${widget.orderIds}";
       type = "${widget.type}";
       fUrl  = "$url&orderRefType=$type&paymentMethod=${widget.pMethod}";
+      await WebServices.easypaisaMsg("$fUrl").then((value) {
+          print("values in $value");
+
+          for(var element in value){
+            if(element.toString().contains("payment")) {
+              msg = element.paymentStatus;
+            }
+
+            // pStatus= element.affect;
+            // orderId = element.orderId;
+            // pStatus = element.paymentStatus;
+            // amount = element.amount;
+          }
+      });
     }
-    var orderId,pStatus,msg,amount;
+    else{
+      orders = "${widget.ordersId}";
+      type = "${widget.orderTypes}";
+      fUrl  = "$url&orderRefType=$type&paymentMethod=${widget.pMethod}";
+      await WebServices.easypaisaMsg("$fUrl").then((value) {
 
-    await WebServices.easypaisaMsg("$fUrl").then((value) {
-      print("values in $value");
-
-      for(var element in value){
-        if(element.toString().contains("payment")) {
-          msg = element.paymentStatus;
-        }
-
-        // pStatus= element.affect;
+        print("values in ${value[1].affect}");
+        pStatus= value[1].affect;
         // orderId = element.orderId;
-        // pStatus = element.paymentStatus;
-        // amount = element.amount;
-      }
-    });
+        msg = value[0].paymentStatus;
+      });
+    }
+
+
     print("msg $msg $pStatus");
+    print("paypals ${widget.orderTypes} ${widget.ordersId}");
+    print("webview ${widget.orderIds} ${widget.orderTypes}");
 
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OrderCompletionStatus(orderId:"${widget.orderIds}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
+    if (widget.type == "car" || widget.type == "hotel" || widget.type == "guide") {
+      Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OrderCompletionStatus(orderId:"${widget.orderIds}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
 
-            }
-            else if(url.contains("success")){
-              var status = url.contains("success=true")?true:false;
-              var msgStatus = url.contains("success=true")?"Success":"Failed";
-              var orders, type,payPalUrl;
-              if (widget.type == "car" || widget.type == "hotel" || widget.type == "guide"){
-                orders = "${widget.orderIds}";
-                type = "${widget.type}";
+    }
+    else{
+      Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OrderCompletionStatus(orderId:"${widget.ordersId}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
 
-                payPalUrl ='${AppConfig.apiSrcLink}tApi.php?action=update_payment_status&orderRefNum=$orders&orderRefType=$type&status=$status&message=$msgStatus"';
+    }
               }
-              else{
-                orders = "${widget.orderIds}";
-                type = "${widget.type}";
-                payPalUrl ='${AppConfig.apiSrcLink}tApi.php?action=update_payment_status&orderRefNum=$orders&orderRefType=$type&status=$status&message=$msgStatus"';
-              }
-              var orderId,pStatus,msg,amount;
+              else if(url.contains("success")){
+                var status = url.contains("success=true")?true:false;
+                var msgStatus = url.contains("success=true")?"Success":"Failed";
+                var orders, type,payPalUrl;
+                if (widget.type == "car" || widget.type == "hotel" || widget.type == "guide"){
+                  orders = "${widget.orderIds}";
+                  type = "${widget.type}";
 
-              await WebServices.paypalMsg("$payPalUrl").then((value) {
-                print("values in $value");
-                for(var element in value){
-                  print("element $element");
-                  // pStatus= element.affect;
-                  // orderId = element.orderId;
-                  msg = element.paymentStatus;
+                  payPalUrl ='${AppConfig.apiSrcLink}tApi.php?action=update_payment_status&orderRefNum=$orders&orderRefType=$type&status=$status&message=$msgStatus"';
                 }
-              });
-              print("msg $msg $amount");
+                else{
+                  orders = "${widget.orderIds}";
+                  type = "${widget.orderTypes}";
+                  payPalUrl ='${AppConfig.apiSrcLink}tApi.php?action=update_payment_status&orderRefNum=$orders&orderRefType=${widget.orderTypes}&status=$status&message=$msgStatus"';
+                  print("paypals ${widget.orderTypes} ${widget.ordersId}");
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OrderCompletionStatus(orderId:"${widget.orderIds}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
-            }
-            print('Page finished loading: $fUrl');
-          },
-          gestureNavigationEnabled: true,
-          backgroundColor: AppConfig.whiteColor,
+                }
+                var orderId,pStatus,msg,amount;
+
+                await WebServices.paypalMsg("$payPalUrl").then((value) {
+                  print("values in ${value[1].affect}");
+                  pStatus= value[1].affect;
+                  // orderId = element.orderId;
+                  msg = value[0].paymentStatus;
+                });
+                print("msg $msg $amount");
+                if (widget.type == "car" || widget.type == "hotel" || widget.type == "guide") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderCompletionStatus(orderId:"${widget.orderIds}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
+
+                }
+                else{
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderCompletionStatus(orderId:"${widget.orderIds}",pStatus:"$pStatus",amount:"${widget.totalAmount}",msg:"$msg")));
+
+                }
+
+              }
+              print('Page finished loading: $fUrl');
+            },
+            gestureNavigationEnabled: true,
+            backgroundColor: AppConfig.whiteColor,
+          ),
         ),
         // floatingActionButton: favoriteButton(),
 

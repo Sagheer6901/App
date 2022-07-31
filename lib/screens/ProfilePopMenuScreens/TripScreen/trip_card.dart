@@ -24,6 +24,7 @@ class TripCard extends StatefulWidget {
 }
 
 class _TripCardState extends State<TripCard> {
+
   late AppConfig _appConfig;
   late FToast fToast;
   bool isTripInWishlist = false;
@@ -101,6 +102,8 @@ class _TripCardState extends State<TripCard> {
                   child: Container(
                     margin: EdgeInsets.only(
                       left: 20,
+                      top: 10,
+                      bottom: 10
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +180,6 @@ class _TripCardState extends State<TripCard> {
                                               size: _appConfig.rH(4),
                                             ),
                                       onTap: () async {
-                                        showCustomToast();
                                         SharedPreferences prefs =
                                             await SharedPreferences
                                                 .getInstance();
@@ -190,6 +192,9 @@ class _TripCardState extends State<TripCard> {
                                               .then((value) async {
                                             await getTripWishlist();
                                           });
+                                          setState(() {
+                                            showCustomToast("Remove From WishList");
+                                          });
                                         } else {
                                           await prefs.setString(
                                               'tripId', "${widget.item!.id}");
@@ -197,6 +202,9 @@ class _TripCardState extends State<TripCard> {
                                                   .addTripWishlistItems()
                                               .then((value) async {
                                             await getTripWishlist();
+                                          });
+                                          setState(() {
+                                            showCustomToast("Added To WishList");
                                           });
                                         }
                                       },
@@ -461,7 +469,7 @@ class _TripCardState extends State<TripCard> {
           );
   }
 
-  showCustomToast() {
+  showCustomToast(msg) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
@@ -469,7 +477,7 @@ class _TripCardState extends State<TripCard> {
         color: AppConfig.shadeColor,
       ),
       child: Text(
-        "Marked Favourite",
+        msg,
         textScaleFactor: 1,
       ),
     );

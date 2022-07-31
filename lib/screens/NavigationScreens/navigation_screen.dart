@@ -197,15 +197,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   void initState() {
     super.initState();
-    // timer = Timer.periodic(Duration(seconds: 5), (Timer t){
-    //   // setState(() {
-    //   //   oldChatCount=0;
-    //   //   oldEnquiryCount=0;
-    //   // });
-    //   // getSupportNoti();
-    //   getEnquiryNoti();
-    //   getChatNoti();
-    // });
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t){
+      // setState(() {
+      //   oldChatCount=0;
+      //   oldEnquiryCount=0;
+      // });
+      // getSupportNoti();
+      getEnquiryNoti();
+      getChatNoti();
+    });
   }
   not(){
     FlutterRingtonePlayer.play(

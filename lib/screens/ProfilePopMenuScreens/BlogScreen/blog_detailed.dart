@@ -89,7 +89,7 @@ class _BlogDetailedScreenState extends State<BlogDetailedScreen> {
               item: widget.item,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -160,13 +160,12 @@ class _BlogDetailedScreenState extends State<BlogDetailedScreen> {
             ),
             Column(
               children: [
-                Divider(
-                  thickness: 3,
-                ),
+
                 FutureBuilder<List<BlogsComments>>(
                   future: widget.blogsCommentsById,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) print(snapshot.error);
+                    // snapshot.data!.length;
                     return snapshot.hasData
                         ? BlogCommentsItems(
                             items: snapshot.data,

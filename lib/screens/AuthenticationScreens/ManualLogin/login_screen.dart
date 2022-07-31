@@ -58,6 +58,15 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString("id", userProfile.id.toString());
     prefs.setString("name", userProfile.name.toString());
   }
+
+  bool _obscureText = true;
+
+  String? _password;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
@@ -111,6 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: TextFormField(
                             controller: userEmail,
                             keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                                fontFamily: AppConfig.fontFamilyRegular),
                             decoration: buildInputDecoration(
                               Icons.email,
                               'Enter email',
@@ -137,21 +148,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.only(
                               bottom: 10, left: 10, right: 10),
-                          child: TextFormField(
-                            controller: userPass,
-                            keyboardType: TextInputType.text,
-                            decoration: buildInputDecoration(
-                              Icons.lock,
-                              'Password',
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 8 ) {
-                                return "Password must be 8 character long";
-                              }
+                          child: Stack(
+                            children: [
+                              TextFormField(
+                                controller: userPass,
+                                keyboardType: TextInputType.text,
+                                style: TextStyle(
+                                    fontFamily: AppConfig.fontFamilyRegular),
+                                decoration: buildInputDecoration(
+                                  Icons.lock,
+                                  'Password',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length < 8 ) {
+                                    return "Password must be 8 character long";
+                                  }
 
-                              return null;
-                            },
-                            // obscureText: true,
+                                  return null;
+                                },
+                                onSaved: (val) => _password = val,
+                                obscureText: _obscureText,
+
+                              ),
+                              Positioned(
+                                right: 10,
+                                child: IconButton(
+                                    onPressed: _toggle,
+                                    // color: AppConfig.whiteColor,
+                                    icon: Icon(_obscureText ? Icons.remove_red_eye_rounded : Icons.remove_red_eye_rounded)),
+                              )
+
+                            ],
                           ),
                         ),
                       ],
@@ -227,12 +254,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ))),
-                        child: const Text(
+                        child:  Text(
                           "Login",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,
+                              fontFamily:
+                          AppConfig.fontFamilyRegular),
                         )),
                   ),
                   TextButton(
@@ -247,7 +276,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Forget Your Password?',
                       style:
-                          TextStyle(fontSize: 12, color: AppConfig.whiteColor),
+                          TextStyle(fontSize: 12, color: AppConfig.whiteColor,fontFamily:
+                          AppConfig.fontFamilyRegular),
                     ),
                   ),
                   Center(
@@ -256,7 +286,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           color: AppConfig.whiteColor,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                          fontFamily:
+                      AppConfig.fontFamilyMedium),
                     ),
                   ),
                   const SizedBox(
@@ -320,12 +351,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
-                                text: 'Dont have an Account? ',
+                              TextSpan(
+                                text: 'Dont have an Account? ',style: TextStyle(fontFamily:
+                                  AppConfig.fontFamilyRegular)
                               ),
                               TextSpan(
                                 text: 'Sign Up',
-                                style: TextStyle(color: Colors.yellow),
+                                style: TextStyle(color: Colors.yellow,fontFamily:
+                                AppConfig.fontFamilyRegular),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context).pushReplacement(

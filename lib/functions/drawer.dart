@@ -9,6 +9,7 @@ import 'package:untitled/screens/DrawerScreens/PaymentScreens/add_payment_method
 import 'package:untitled/screens/DrawerScreens/PrivacyPolicy/privacy_policy.dart';
 import 'package:untitled/screens/DrawerScreens/Queries/AllChatScreen/all_chat_screen.dart';
 import 'package:untitled/screens/DrawerScreens/Queries/SendingQuery/chat_screen.dart';
+import 'package:untitled/screens/DrawerScreens/RateUs/rate_us.dart';
 import 'package:untitled/screens/NavigationScreens/Cart/cart_screen.dart';
 import 'package:untitled/screens/NavigationScreens/CheckoutScreen/checkout.dart';
 import 'package:untitled/services/services.dart';
@@ -160,36 +161,36 @@ class _MyDrawerState extends State<MyDrawer> {
                     thickness: 1,
                     color: Colors.grey,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: ListTile(
-                      title:  Text(
-                        "Payments",
-                        style:
-                            TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
-                      ),
-                      trailing: const Image(
-                        image: AssetImage('assets/images/arow.png'),
-                        height: 15,
-                        width: 15,
-                      ),
-                      leading: const Icon(Icons.payment),
-
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddPaymentMethod()),
-                        );
-                      },
-                    ),
-                  ),
-                  const Divider(
-                    indent: 80,
-                    endIndent: 20,
-                    height: 1,
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10.0),
+                  //   child: ListTile(
+                  //     title:  Text(
+                  //       "Payments",
+                  //       style:
+                  //           TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  //     ),
+                  //     trailing: const Image(
+                  //       image: AssetImage('assets/images/arow.png'),
+                  //       height: 15,
+                  //       width: 15,
+                  //     ),
+                  //     leading: const Icon(Icons.payment),
+                  //
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(builder: (context) => AddPaymentMethod()),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  // const Divider(
+                  //   indent: 80,
+                  //   endIndent: 20,
+                  //   height: 1,
+                  //   thickness: 1,
+                  //   color: Colors.grey,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: ListTile(
@@ -315,7 +316,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     padding: const EdgeInsets.only(left: 10.0),
                     child: ListTile(
                       title:  Text(
-                        "Enquiry",
+                        "Customer Support",
                         style:
                         TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
                       ),
@@ -389,11 +390,11 @@ class _MyDrawerState extends State<MyDrawer> {
                       leading: const Icon(Icons.rate_review_outlined),
 
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CartScreen()),
-
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => RateUs()),
+                        //
+                        // );
                       },                    ),
                   ),
                   const Divider(
@@ -406,6 +407,356 @@ class _MyDrawerState extends State<MyDrawer> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class CustomDrawer{
+  static AppConfig? _appConfig;
+
+  static Widget drawer (BuildContext context, name, email, profileUrl) {
+    _appConfig = AppConfig(context);
+    return SafeArea(
+      child: ClipRRect(
+        borderRadius: const BorderRadius.horizontal(
+          right: Radius.circular(40.0),
+        ),
+        child: Drawer(
+          backgroundColor: AppConfig.whiteColor,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration:  BoxDecoration(color: AppConfig.whiteColor),
+                child: Center(
+                  child: Row(
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5,
+                          )),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child:  name!=null?Text(
+                                    '${name}',
+                                    style: TextStyle(fontSize: AppConfig.f3,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                                  ):Text(
+                                    '--',
+                                    style: TextStyle(fontSize: AppConfig.f3,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                                  ),
+                                ),
+                                email!=null?Text('${email}',style: TextStyle(fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,):Text('--',style: TextStyle(fontSize: AppConfig.f5),textScaleFactor: 1,),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 25,left: 5),
+                              child: Container(
+                                  height: _appConfig!.rH(5),
+                                  width: _appConfig!.rH(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, color: AppConfig.carColor),
+                                  child:
+                                  ClipRRect(
+                                      borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                      child: profileUrl!=null?Image.network(
+                                        profileUrl.toString().contains("http")?"${profileUrl}":"${AppConfig.srcLink}${profileUrl}",
+
+                                        fit: BoxFit.cover,
+                                      ):Center(child: Text("--",style: TextStyle(fontSize: AppConfig.f3),),
+                                      )
+                                  )
+                              ),)
+                          ]
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+
+                child: ListTile(
+                  title:  Text(
+                    "Privacy",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading:  const Icon(Icons.privacy_tip_outlined),
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FAQ()),
+                    );
+                  },                    ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 10.0),
+              //   child: ListTile(
+              //     title:  Text(
+              //       "Payments",
+              //       style:
+              //       TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+              //     ),
+              //     trailing: const Image(
+              //       image: AssetImage('assets/images/arow.png'),
+              //       height: 15,
+              //       width: 15,
+              //     ),
+              //     leading: const Icon(Icons.payment),
+              //
+              //     onTap: () {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => AddPaymentMethod()),
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const Divider(
+              //   indent: 80,
+              //   endIndent: 20,
+              //   height: 1,
+              //   thickness: 1,
+              //   color: Colors.grey,
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Help center",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading:  Icon(Icons.help_center_outlined),
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatScreen(chat: WebServices.productsStreamchat(),)),
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => AllChatScreen()),
+                    // );
+                  },
+                ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Invite Friends",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading: const Icon(Icons.insert_invitation),
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InviteFriends()),
+                    );
+                  },
+                ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Notification",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading:const Icon(Icons.notifications_none_outlined),
+
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationScreen()),
+
+                    );
+                  },
+                ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 10.0),
+              //   child: ListTile(
+              //     title:  Text(
+              //       "Settings",
+              //       style:
+              //           TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+              //     ),
+              //     trailing: const Image(
+              //       image: AssetImage('assets/images/arow.png'),
+              //       height: 15,
+              //       width: 15,
+              //     ),
+              //     leading: const Icon(Icons.settings),
+              //
+              //     onTap: () {},
+              //   ),
+              // ),
+              // const Divider(
+              //   indent: 80,
+              //   endIndent: 20,
+              //   height: 1,
+              //   thickness: 1,
+              //   color: Colors.grey,
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Enquiry",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading: const Icon(Icons.contact_page_outlined),
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ContactForm()),
+
+                    );
+                  },
+                ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Contact Us",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading: const Icon(Icons.contact_page_outlined),
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ContactUs()),
+
+                    );
+                  },
+                ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  title:  Text(
+                    "Rate Us",
+                    style:
+                    TextStyle(fontSize: AppConfig.f4, fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+                  ),
+                  trailing: const Image(
+                    image: AssetImage('assets/images/arow.png'),
+                    height: 15,
+                    width: 15,
+                  ),
+                  leading: const Icon(Icons.rate_review_outlined),
+
+                  onTap: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => RateUs()),
+                    //
+                    // );
+                  },                    ),
+              ),
+              const Divider(
+                indent: 80,
+                endIndent: 20,
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              ),
+            ],
           ),
         ),
       ),

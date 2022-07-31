@@ -119,7 +119,7 @@ class _HotelListState extends State<HotelList> {
                                 style: TextStyle(
                                     fontSize: AppConfig.f2,
                                     fontWeight: FontWeight.bold,
-                                    color: AppConfig.carColor,fontFamily: AppConfig.fontFamilyMedium),
+                                    color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyMedium),
                               ),
                               SizedBox(
                                 height: 25,

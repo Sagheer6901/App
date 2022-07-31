@@ -13,7 +13,9 @@ import 'package:untitled/screens/NavigationScreens/navigation_screen.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/BlogScreen/blogs.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/GuideScreen/guide_card.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/GuideScreen/guide_filters.dart';
+import 'package:untitled/screens/ProfilePopMenuScreens/TripScreen/trip_booking_screen.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/TripScreen/trip_card.dart';
+import 'package:untitled/screens/ProfilePopMenuScreens/TripScreen/trip_details.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/TripScreen/trip_filters.dart';
 import 'package:untitled/screens/ProfilePopMenuScreens/WishListScreen/wish_list.dart';
 import 'package:untitled/services/services.dart';
@@ -127,7 +129,7 @@ class _TripListState extends State<TripList> {
                               style: TextStyle(
                                   fontSize: AppConfig.f2,
                                   fontWeight: FontWeight.bold,
-                                  color: AppConfig.carColor,
+                                  color: AppConfig.tripColor,
                                   fontFamily: AppConfig.fontFamilyMedium),
                             ),
                             SizedBox(
@@ -305,7 +307,20 @@ class _TripItemsState extends State<TripItems> {
               ? widget.items!.length
               : widget.itemLimit,
           itemBuilder: (context, index) {
-            return TripCard(item: widget.items![index]);
+            return InkWell(
+                onTap: (){
+                  Navigator
+                      .push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TripDetails(
+                          products: WebServices.tripItems(),
+                          reviews: WebServices.tripReviewItem("${widget.items![index].id}"),
+                          item: this.widget.items![index],
+                        )),
+                  );
+                },
+                child: TripCard(item: widget.items![index]));
           },
         ));
   }

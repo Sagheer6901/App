@@ -444,10 +444,14 @@ class _TripBookingDetailScreenState extends State<TripBookingDetailScreen>
                   var name = prefs.getString("name");
                   var contact = prefs.getString("contact");
 
+                  List orderIds = [];
+                  List orderTypes = [];
                   var total = 0;
                   for (var c in selectedTrips) {
                     total = total + int.parse(c['price'].toString());
                     print("total trips: $total");
+                    orderIds.add(c['id']);
+                    orderTypes.add('trip');
                   }
                   for (var h in priceHotelRoomsList) {
                     total =
@@ -455,13 +459,18 @@ class _TripBookingDetailScreenState extends State<TripBookingDetailScreen>
                     total + (int.parse(h['price'].toString()));
 
                     print("total hotelrooms: $total");
+                    orderIds.add(h['id']);
+                    orderTypes.add('hotel');
                   }
+                  print("orders $orderIds $orderTypes");
                   for (var c in priceCarList) {
                     total =
                         // total + (int.parse(c['price'].toString()) * carDays);
                     total + (int.parse(c['price'].toString()));
 
                     print("total cars: $total");
+                    orderIds.add(c['id']);
+                    orderTypes.add('car');
                   }
                   for (var g in priceGuideList) {
                     total =
@@ -469,17 +478,25 @@ class _TripBookingDetailScreenState extends State<TripBookingDetailScreen>
                     total + (int.parse(g['price'].toString()));
 
                     print("total guides: $total");
+                    orderIds.add(g['id']);
+                    orderTypes.add('guide');
                   }
                   var str = "";
                   for (var s in selectedTrips) {
                     str = "$str" + "${s['title']}";
                   }
+                  print("orders $orderIds $orderTypes");
 
+                  String orders = orderIds.toString().substring(1, orderIds.toString().length - 1);
+                  String ordersTypes = orderTypes.toString().substring(1, orderTypes.toString().length - 1);
+
+                  print("orders ids$orders");
                   print(" detail $total $str");
 
                   for (var e in selectedTrips) {
                     await WebServices.addTourBooking(
                         "${e['id']}", "${e['price']}");
+
                   }
 
                   for (var e in priceHotelRoomsList) {
@@ -536,8 +553,11 @@ class _TripBookingDetailScreenState extends State<TripBookingDetailScreen>
                               name: "$name",
                               contact: "$contact",
                               type: "tripbooking",
+                              bookingType: "trip",
                               title: "${widget.item!.title}",
                               orderId: "$orderId",
+                              orderIds: orders,
+                              orderTypes: ordersTypes,
                               // days: "$_diff",
                               price: "${widget.item!.price}",
                               totalPrice: "$total")));

@@ -102,7 +102,6 @@ class _BookVehicleCardState extends State<BookVehicleCard> {
                           size: _appConfig.rH(4),
                         ),
                         onTap: () async {
-                          showCustomToast();
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           // prefs.remove('carId');
@@ -113,12 +112,18 @@ class _BookVehicleCardState extends State<BookVehicleCard> {
                                 .then((value) async {
                               await getCarWishlist();
                             });
+                            setState(() {
+                              showCustomToast("Remove From WishList");
+                            });
                           } else {
                             await prefs.setString(
                                 'carId', "${widget.item!.id}");
                             await WebServices.addCarWishlistItems()
                                 .then((value) async {
                               await getCarWishlist();
+                            });
+                            setState(() {
+                              showCustomToast("Added To WishList");
                             });
                           }
                         },
@@ -326,7 +331,7 @@ class _BookVehicleCardState extends State<BookVehicleCard> {
           );
   }
 
-  showCustomToast() {
+  showCustomToast(msg) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
@@ -334,7 +339,7 @@ class _BookVehicleCardState extends State<BookVehicleCard> {
         color: AppConfig.shadeColor,
       ),
       child: Text(
-        "Marked Favourite",
+        msg,
         textScaleFactor: 1,
       ),
     );

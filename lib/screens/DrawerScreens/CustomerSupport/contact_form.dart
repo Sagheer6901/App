@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled/functions/app_config.dart';
 import 'package:untitled/functions/custom_btn.dart';
+import 'package:untitled/functions/custom_dialog.dart';
 import 'package:untitled/functions/notification_pop_menu.dart';
 import 'package:untitled/functions/popup_menu.dart';
 import 'package:untitled/functions/preferred_size_appbar.dart';
@@ -47,17 +48,14 @@ class _ContactFormState extends State<ContactForm> {
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent
-            //color set to transperent or set your own color
-            ));
+    _appConfig.statusBar();
     return Scaffold(
-      backgroundColor: AppConfig.tripColor,
+      // backgroundColor: AppConfig.White,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(_appConfig.rH(25)), // Set this height
+        preferredSize: Size.fromHeight(_appConfig.rH(20)), // Set this height
         child: SafeArea(
           child: Container(
-              height: _appConfig.rH(30),
+              // height: _appConfig.rH(30),
               padding: EdgeInsets.only(
                   left: _appConfig.rWP(5),
                   right: _appConfig.rHP(5),
@@ -105,7 +103,7 @@ class _ContactFormState extends State<ContactForm> {
                     ],
                   ),
                   Text(
-                    "Contact Us",
+                    "Customer Support",
                     style: TextStyle(
                         fontSize: AppConfig.f2,
                         fontWeight: FontWeight.bold,
@@ -127,17 +125,19 @@ class _ContactFormState extends State<ContactForm> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-                height: _appConfig.rH(72),
+                // height: _appConfig.rH(72),
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 decoration: BoxDecoration(
-                    color: AppConfig.whiteColor,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30))),
+                    // color: AppConfig.whiteColor,
+                    // borderRadius: const BorderRadius.only(
+                    //     topRight: Radius.circular(30),
+                    //     topLeft: Radius.circular(30))
+                ),
                 child: Form(
                   key: formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
@@ -266,8 +266,8 @@ class _ContactFormState extends State<ContactForm> {
                           child: (selectedImage == null)
                               ? Container(
                                   margin: EdgeInsets.all(15),
-                                  height: 60,
-                                  width: _appConfig.rW(60),
+                                  height: 40,
+                                  width: _appConfig.rW(40),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     color: AppConfig.shadeColor,
@@ -279,14 +279,14 @@ class _ContactFormState extends State<ContactForm> {
                                           children: [
                                             Icon(
                                               Icons.attachment_outlined,
-                                              size: 30,
+                                              size: 20,
                                               color: AppConfig.whiteColor,
                                             ),
                                             Text(
                                               'Attach Files',
                                               style: TextStyle(
                                                 color: AppConfig.whiteColor,
-                                                fontSize: AppConfig.f4,
+                                                fontSize: AppConfig.f5,
                                               ),
                                             ),
                                           ],
@@ -344,6 +344,7 @@ class _ContactFormState extends State<ContactForm> {
                       //
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Container(child: Text("$encode")),
                           Padding(
@@ -360,27 +361,47 @@ class _ContactFormState extends State<ContactForm> {
                                             )),
                                   );
                                 },
-                                child: Text("All Requests",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),)),
+                                child: Text("View Previous enquiries",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),)),
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: CustomBtn(
                               "Send",
-                              40,
+                              25,
                               AppConfig.hotelColor,
                               textSize: AppConfig.f3,
                               textColor: AppConfig.tripColor,
                               height: 50,
                               onPressed: ()  {
                                 if (formKey.currentState!.validate()) {
-                                  WebServices.sendTicket(
+                                   WebServices.sendTicket(
                                       _subject.text, _description.text, image);
                                   setState(() {
                                     _subject.text = "";
                                     _description.text = "";
                                     image = null;
                                   });
-                                  showCustomToast();
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomDialog(
+                                        title: 'Message',
+                                        subtitle: 'Thank you for submitting your enquiry ,Team Traboon is looking at the issue, we will get back to you',
+                                        primaryAction: () {
+                                          // Navigator.pop(context);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => AllRequests(
+                                                  products:
+                                                  WebServices.getGetTickets(),
+                                                )),
+                                          );
+                                        },
+                                        primaryActionText: 'Okay',
+                                      );
+                                    },);
+                                  // showCustomToast();
 
                                   // _subject.text = "";
                                   // _description.text = "";

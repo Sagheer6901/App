@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/functions/app_config.dart';
 import 'package:untitled/functions/custom_btn.dart';
@@ -22,15 +23,15 @@ class RemoveVehicleCard extends StatefulWidget {
 
 class _RemoveVehicleCardState extends State<RemoveVehicleCard> {
   late AppConfig _appConfig;
-  Color _iconColor = Colors.grey;
+  late FToast fToast;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
   }
-
-
   @override
   // Widget build(BuildContext context) {
   //   _appConfig = AppConfig(context);
@@ -504,6 +505,9 @@ class _RemoveVehicleCardState extends State<RemoveVehicleCard> {
                         WebServices.removeCarWishlistItems().then((value) async {
                           print("Car removed");
                         });
+                        setState(() {
+                          showCustomToast("Remove From WishList");
+                        });
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -534,6 +538,25 @@ class _RemoveVehicleCardState extends State<RemoveVehicleCard> {
       ),
     );
   }
+  showCustomToast(msg) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: AppConfig.shadeColor,
+      ),
+      child: Text(
+        msg,
+        textScaleFactor: 1,
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      toastDuration: Duration(seconds: 1),
+    );
+  }
+
 
 }
 
@@ -555,7 +578,15 @@ class RemoveHotelBookingCard extends StatefulWidget {
 
 class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
   late AppConfig _appConfig;
+  late FToast fToast;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
   @override
   // Widget build(BuildContext context) {
   //   _appConfig = AppConfig(context);
@@ -789,7 +820,7 @@ class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Container(
                 decoration: BoxDecoration(
                   color: AppConfig.tripColor,
@@ -957,12 +988,10 @@ class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       color: AppConfig.tripColor,
-                                      fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,)
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                                      fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 "Per Night",
                                 style: TextStyle(
@@ -970,6 +999,12 @@ class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
                                     fontSize: AppConfig.f5,
                                     color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
                               ),
+
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               const SizedBox(
                                 width: 25,
                               ),
@@ -1017,8 +1052,9 @@ class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
 //   if (_iconColor == Colors.grey)    _iconColor = Colors.red;
 //   else _iconColor = Colors.grey;
 // });
-
-
+                                  setState(() {
+                                    showCustomToast("Remove From WishList");
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -1044,6 +1080,24 @@ class _RemoveHotelBookingCardState extends State<RemoveHotelBookingCard> {
       ),
     );
   }
+  showCustomToast(msg) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: AppConfig.shadeColor,
+      ),
+      child: Text(
+        msg,
+        textScaleFactor: 1,
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      toastDuration: Duration(seconds: 1),
+    );
+  }
 
 }
 
@@ -1062,7 +1116,15 @@ class RemoveGuideCard extends StatefulWidget {
 
 class _RemoveGuideCardState extends State<RemoveGuideCard> {
   late AppConfig _appConfig;
+  late FToast fToast;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
   @override
   // Widget build(BuildContext context) {
   //   _appConfig = AppConfig(context);
@@ -1499,9 +1561,9 @@ class _RemoveGuideCardState extends State<RemoveGuideCard> {
 //   );
 // }
                                   });
-
-
-
+                                  setState(() {
+                                    showCustomToast("Remove From WishList");
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -1530,6 +1592,24 @@ class _RemoveGuideCardState extends State<RemoveGuideCard> {
       ),
     );
   }
+  showCustomToast(msg) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: AppConfig.shadeColor,
+      ),
+      child: Text(
+        msg,
+        textScaleFactor: 1,
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      toastDuration: Duration(seconds: 1),
+    );
+  }
 
 }
 
@@ -1546,7 +1626,15 @@ class RemoveTripCard extends StatefulWidget {
 
 class _RemoveTripCardState extends State<RemoveTripCard> {
   late AppConfig _appConfig;
+  late FToast fToast;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
   @override
   // Widget build(BuildContext context) {
   //   _appConfig = AppConfig(context);
@@ -1981,9 +2069,9 @@ class _RemoveTripCardState extends State<RemoveTripCard> {
 //   );
 // }
                                   });
-
-
-
+                                  setState(() {
+                                    showCustomToast("Remove From WishList");
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2010,6 +2098,24 @@ class _RemoveTripCardState extends State<RemoveTripCard> {
           ),
         ],
       ),
+    );
+  }
+  showCustomToast(msg) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: AppConfig.shadeColor,
+      ),
+      child: Text(
+        msg,
+        textScaleFactor: 1,
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      toastDuration: Duration(seconds: 1),
     );
   }
 

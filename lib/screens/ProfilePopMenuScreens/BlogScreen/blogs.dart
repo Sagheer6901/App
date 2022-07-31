@@ -126,7 +126,7 @@ class _MyBlogsState extends State<MyBlogs> {
                         style: TextStyle(
                           fontSize: AppConfig.f2,
                           fontWeight: FontWeight.bold,
-                          color: AppConfig.carColor,
+                          color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyMedium
                         ),
                         textScaleFactor: 1,
                       ),
@@ -1434,14 +1434,34 @@ class BlogCommentsItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemCount: items!.length < itemLimit ? items!.length : itemLimit,
-      itemBuilder: (context, index) {
-        return BlogReviewCard(item: items![index]);
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            "Reviews(${items!.length})",
+            style: TextStyle(
+                fontSize: AppConfig.f2,
+                fontWeight: FontWeight.bold,
+                color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyMedium
+            ),
+            textScaleFactor: 1,
+          ),
+        ),
+        Divider(
+          thickness: 3,
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: items!.length < itemLimit ? items!.length : itemLimit,
+          itemBuilder: (context, index) {
+            return BlogReviewCard(item: items![index]);
+          },
+        ),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:untitled/functions/app_config.dart';
@@ -118,6 +119,118 @@ class _GuideDetailsState extends State<GuideDetails>
                 ),
               )),
         ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 80,
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 5),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                // color: AppConfig.primaryColor,
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                child: Image.network(
+                                  "${AppConfig.srcLink}${widget.item!.gallery}",
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 80,
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 5),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                // color: AppConfig.primaryColor,
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                child: Image.network(
+                                  "${AppConfig.srcLink}${widget.item!.gallery}",
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 80,
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 5),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                // color: AppConfig.primaryColor,
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                child: Image.network(
+                                  "${AppConfig.srcLink}${widget.item!.gallery}",
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
         SizedBox(
           height: _appConfig.rH(2),
         ),
@@ -226,12 +339,15 @@ class _GuideDetailsState extends State<GuideDetails>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Guide Info:",
+                "Guide Details:",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppConfig.tripColor,
-                    fontFamily: AppConfig.fontFamilyRegular),
+                    fontFamily: AppConfig.fontFamilyRegular, fontSize: AppConfig.f3),
                 textScaleFactor: 1,
+              ),
+              SizedBox(
+                height: 5,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,6 +355,28 @@ class _GuideDetailsState extends State<GuideDetails>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          Text("Location: ",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("${widget.item!.location}",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1)
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         children: [
                           Text("Name: ",
@@ -296,6 +434,50 @@ class _GuideDetailsState extends State<GuideDetails>
                             width: 15,
                           ),
                           Text("30 Years",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1)
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Text("CheckIn: ",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("${widget.item!.checkin}",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1)
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Text("CheckOut: ",
+                              style: TextStyle(
+                                  color: AppConfig.tripColor,
+                                  fontSize: AppConfig.f5,
+                                  fontFamily: AppConfig.fontFamilyRegular),
+                              textScaleFactor: 1),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("${widget.item!.checkout}",
                               style: TextStyle(
                                   color: AppConfig.tripColor,
                                   fontSize: AppConfig.f5,
@@ -434,7 +616,7 @@ class _GuideDetailsState extends State<GuideDetails>
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -442,6 +624,7 @@ class _GuideDetailsState extends State<GuideDetails>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Row(
                         children: [
                           Text("Rs",
@@ -743,7 +926,7 @@ class GuideCardReview extends StatelessWidget {
                     backgroundColor: Colors.black12,
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      '${AppConfig.srcLink}${item!.image}',
+                      '${item!.image}'.contains('http')?'${item!.image}':'${AppConfig.srcLink}${item!.image}',
                     ),
                   ),
                   SizedBox(
@@ -810,53 +993,81 @@ class GuideCardReview extends StatelessWidget {
   }
 }
 
-class TourGuideDetails extends StatelessWidget {
+class TourGuideDetails extends StatefulWidget {
   final TourGuideModel? item;
   final Future<List<TourGuideModel>>? products;
   TourGuideDetails({Key? key, this.products, this.item}) : super(key: key);
+
+  @override
+  State<TourGuideDetails> createState() => _TourGuideDetailsState();
+}
+
+class _TourGuideDetailsState extends State<TourGuideDetails> {
+  bool isReadmore=false;
+
   @override
   Widget build(BuildContext context) {
+    final  maxLines =isReadmore?null:5;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Lorem ipsum dollar",
-            style: TextStyle(
-                fontSize: AppConfig.f3,
-                color: AppConfig.tripColor,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppConfig.fontFamilyRegular),
-            textScaleFactor: 1,
-          ),
+          // Text(
+          //   "Lorem ipsum dollar",
+          //   style: TextStyle(
+          //       fontSize: AppConfig.f3,
+          //       color: AppConfig.tripColor,
+          //       fontWeight: FontWeight.bold,
+          //       fontFamily: AppConfig.fontFamilyRegular),
+          //   textScaleFactor: 1,
+          // ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
-          Text(
-            "${item!.description}",
-            // overflow: TextOverflow.ellipsis,
-            // maxLines: 7,
-            style: TextStyle(
-                fontSize: AppConfig.f4,
-                color: AppConfig.textColor,
-                fontFamily: AppConfig.fontFamilyRegular),
-            textScaleFactor: 1,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          Column(
             children: [
-              Text(
-                "More",
+              ReadMoreText(
+                "${widget.item!.description}",
+                // overflow: TextOverflow.ellipsis,
+                trimLines: maxLines!=null?maxLines:2,
+                trimCollapsedText: 'Read More',
+                trimExpandedText: 'Read Less',
                 style: TextStyle(
-                    color: AppConfig.carColor,
+                    fontSize: AppConfig.f4,
+                    color: AppConfig.textColor,
                     fontFamily: AppConfig.fontFamilyRegular),
                 textScaleFactor: 1,
-              )
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     builBtn()
+              //   ],
+              // )
+
             ],
-          )
+          ),
         ],
       ),
     );
+  }
+  Widget builBtn(){
+    return                   TextButton(
+      onPressed: (){
+        setState(() {
+          isReadmore !=isReadmore;
+
+        });
+      },
+      child: Text(
+        isReadmore?"Read Less":"Read More",
+        style: TextStyle(
+            color: AppConfig.carColor,
+            fontFamily: AppConfig.fontFamilyRegular),
+        textScaleFactor: 1,
+      ),
+    );
+
   }
 }

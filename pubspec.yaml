@@ -61,6 +61,9 @@ dependencies:
 
   get: ^4.6.1
 
+  readmore: ^2.1.0
+  flutter_rating_stars: ^1.0.3+4
+
   firebase_phone_auth_handler:
 
   fluttertoast:

@@ -253,7 +253,7 @@ class _SearchCardState extends State<SearchCard> {
             textSize: AppConfig.f4,
             onPressed: () async {
               if (widget.type == "car") {
-                await WebServices.searchCarItems(_searchController.text)
+                await WebServices.searchCarItems(_searchController.text.trim())
                     .then((value) {
                   setState(() {
                     allCar = value;
@@ -301,7 +301,7 @@ class _SearchCardState extends State<SearchCard> {
                   }
                 });
               } else if (widget.type == "hotel") {
-                await WebServices.searchHotelItems(_searchController.text)
+                await WebServices.searchHotelItems(_searchController.text.trim())
                     .then((value) {
                   setState(() {
                     allHotel = value;
@@ -349,7 +349,7 @@ class _SearchCardState extends State<SearchCard> {
                   }
                 });
               } else if (widget.type == "guide") {
-                await WebServices.searchGuideItems(_searchController.text)
+                await WebServices.searchGuideItems(_searchController.text.trim())
                     .then((value) {
                   setState(() {
                     allGuides = value;

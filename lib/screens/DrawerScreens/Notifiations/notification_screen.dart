@@ -23,7 +23,7 @@ class _NotificationScreenState extends State<NotificationScreen>    with SingleT
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
   }
 
   late AppConfig _appConfig;
@@ -60,7 +60,8 @@ class _NotificationScreenState extends State<NotificationScreen>    with SingleT
                       //         BorderRadius.all(Radius.circular(30))),
                       //     color: AppConfig.tripColor),
                     tabs: <Widget>[
-                  Tab(child: Row(
+                      Tab(child: Center(child: Text("All Read",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),)),),
+                      Tab(child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Unread",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
@@ -86,13 +87,29 @@ class _NotificationScreenState extends State<NotificationScreen>    with SingleT
                       // )
                     ],
                   ),),
-                  Tab(child: Center(child: Text("All Read",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),)),)
                 ]),
               ),
               Expanded(
                 child: TabBarView(
                     controller: _tabController,
                     children: <Widget>[
+                      ListView(
+                        children: [
+                          NotificationCard(description: "Admin sent you message",msgTitle: "Chat",color: AppConfig.shadeColor.withOpacity(0.3),onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ChatScreen()),
+                            );
+                          },),
+                          NotificationCard(description: "Admin sent you message",msgTitle: "Enquiry",color: AppConfig.shadeColor.withOpacity(0.3),onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AllRequests(    products: WebServices
+                                  .getGetTickets(),)),
+                            );
+                          },)
+                        ],
+                      ),
                       ListView(
                         children: [
                           oldChatCount!=0?NotificationCard(description: "New Messages from Admin",msgTitle: "Chat",color: AppConfig.queryBackground,onPressed: (){
@@ -110,25 +127,9 @@ class _NotificationScreenState extends State<NotificationScreen>    with SingleT
                           },):SizedBox(),
                         ],
                       ),
-                      ListView(
-                        children: [
-                          NotificationCard(description: "Admin sent you message",msgTitle: "Chat",color: AppConfig.shadeColor.withOpacity(0.3),onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ChatScreen()),
-                            );
-                          },),
-                          NotificationCard(description: "Admin sent you message",msgTitle: "Enquiry",color: AppConfig.shadeColor.withOpacity(0.3),onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => AllRequests(    products: WebServices
-                                  .getGetTickets(),)),
-                            );
-                          },)
-                        ],
-                      )
 
-                ]),
+
+                    ]),
               )
             ],
           ),

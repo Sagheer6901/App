@@ -89,11 +89,11 @@ class _WishListState extends State<WishList> {
                     children: [
                       Expanded(
                         child: Text(
-                          "Your Plans",
+                          "Your Choosed Plans",
                           style: TextStyle(
                               fontSize: AppConfig.f4,
                               fontWeight: FontWeight.bold,
-                              color: AppConfig.carColor,
+                              color: AppConfig.tripColor,
                               fontFamily: AppConfig.fontFamilyMedium),
                           textScaleFactor: 1,
                         ),

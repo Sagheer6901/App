@@ -69,7 +69,7 @@ class _HotelBookingCardState extends State<HotelBookingCard> {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Container(
                 decoration: BoxDecoration(
                   color: AppConfig.tripColor,
@@ -84,7 +84,7 @@ class _HotelBookingCardState extends State<HotelBookingCard> {
                   child: Image.network(
                     "${AppConfig.srcLink}${widget.item.image}",
                     height: _appConfig.rH(30),
-                    width: _appConfig.rW(30),
+                    width: _appConfig.rW(35),
                     fit: BoxFit.cover,
                   ),
                 )),
@@ -167,6 +167,9 @@ class _HotelBookingCardState extends State<HotelBookingCard> {
                                   .then((value) async {
                                 await getHotelWishlist();
                               });
+                              setState(() {
+                                showCustomToast("Remove From WishList");
+                              });
                             } else {
                               // showCustomToast("Marked Favourite");
                               await prefs.setString(
@@ -174,6 +177,9 @@ class _HotelBookingCardState extends State<HotelBookingCard> {
                               await WebServices.addHotelWishlistItems()
                                   .then((value) async {
                                 await getHotelWishlist();
+                              });
+                              setState(() {
+                                showCustomToast("Added To WishList");
                               });
                             }
                           },
@@ -252,19 +258,23 @@ class _HotelBookingCardState extends State<HotelBookingCard> {
                                   style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       color: AppConfig.tripColor,
-                                      fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1)
+                                      fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Per Night",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppConfig.f6,
+                                      color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1
+                              ),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "Per Night",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppConfig.f5,
-                                    color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1
-                              ),
+
                               const SizedBox(
                                 width: 25,
                               ),

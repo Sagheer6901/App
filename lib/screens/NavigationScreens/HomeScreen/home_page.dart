@@ -139,6 +139,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
+    var _scaffoldKey = GlobalKey<ScaffoldState>();
+
     // print(Get.width.toString());
     // print(Get.height.toString());
     // print(context.width.toString());
@@ -155,8 +157,9 @@ class _MyHomePageState extends State<MyHomePage>
           fetchData();
         },
         child: Scaffold(
+          key: _scaffoldKey,
           backgroundColor: Colors.white,
-          drawer: const MyDrawer(),
+          drawer: CustomDrawer.drawer(context, "${userProfile.name}", "${userProfile.email}", "${userProfile.image}"),
           appBar: PreferredSize(
             preferredSize:
                 Size.fromHeight(_appConfig.rH(50)), // Set this height
@@ -166,22 +169,250 @@ class _MyHomePageState extends State<MyHomePage>
                   child: TabBarView(
                     controller: _tabController,
                     children: <Widget>[
-                      // FutureBuilder<List<PopularCitiesModel>>(
-                      //   future: widget.popularCities,
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.hasError) print(snapshot.error);
-                      //     return snapshot.hasData
-                      //         ? _tripTab(items: snapshot.data)
+                      Stack(
+                        children: [
+                          _tripTab(context,userProfile.name, userProfile.email,
+                              userProfile.image,),
+                          Positioned(
+                            left: 10,
+                            top: 30,
+                            child:   IconButton(onPressed: (){
+                            // widget.key;
+                              _scaffoldKey.currentState!.openDrawer();
+                            // MyDrawer();
+                          }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: _appConfig.rH(15),
+                            padding: EdgeInsets.only(
+                                top: _appConfig.rHP(2),
+                                left: _appConfig.rHP(2.5),
+                                right: _appConfig.rHP(2.5)),
+                            decoration: BoxDecoration(
+                                color: AppConfig.tripColor,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    SizedBox(width: 30,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${userProfile.name}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: AppConfig.f3,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyMedium),
+                                          textScaleFactor: 1,
+                                        ),
+                                        Text(
+                                          "${userProfile.email}",
+                                          style: TextStyle(
+                                              fontSize: AppConfig.f5,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyRegular),
+                                          textScaleFactor: 1,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [NotificationPopUp(), PopUp()],
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                              top: _appConfig.rH(10), left: 20, right: 20, child: SearchCard(type: "car",)),
+                          Positioned(
+                            left: 10,
+                            top: 10,
+                            child:   IconButton(onPressed: (){
+                              // widget.key;
+                              _scaffoldKey.currentState!.openDrawer();
+                              // MyDrawer();
+                            }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: _appConfig.rH(15),
+                            padding: EdgeInsets.only(
+                                top: _appConfig.rHP(2),
+                                left: _appConfig.rHP(2.5),
+                                right: _appConfig.rHP(2.5)),
+                            decoration: BoxDecoration(
+                                color: AppConfig.tripColor,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    SizedBox(width: 30,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${userProfile.name}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: AppConfig.f3,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyMedium),
+                                          textScaleFactor: 1,
+                                        ),
+                                        Text(
+                                          "${userProfile.email}",
+                                          style: TextStyle(
+                                              fontSize: AppConfig.f5,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyRegular),
+                                          textScaleFactor: 1,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [NotificationPopUp(), PopUp()],
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                              top: _appConfig.rH(10), left: 20, right: 20, child: SearchCard(type: "hotel",)),
+                          Positioned(
+                            left: 10,
+                            top: 10,
+                            child:   IconButton(onPressed: (){
+                              // widget.key;
+                              _scaffoldKey.currentState!.openDrawer();
+                              // MyDrawer();
+                            }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
+                        ],
+                      ),Stack(
+                        children: [
+                          Container(
+                            height: _appConfig.rH(15),
+                            padding: EdgeInsets.only(
+                                top: _appConfig.rHP(2),
+                                left: _appConfig.rHP(2.5),
+                                right: _appConfig.rHP(2.5)),
+                            decoration: BoxDecoration(
+                                color: AppConfig.tripColor,
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    SizedBox(width: 30,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${userProfile.name}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: AppConfig.f3,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyMedium),
+                                          textScaleFactor: 1,
+                                        ),
+                                        Text(
+                                          "${userProfile.email}",
+                                          style: TextStyle(
+                                              fontSize: AppConfig.f5,
+                                              color: AppConfig.whiteColor,
+                                              fontFamily: AppConfig.fontFamilyRegular),
+                                          textScaleFactor: 1,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [NotificationPopUp(), PopUp()],
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                              top: _appConfig.rH(10), left: 20, right: 20, child: SearchCard(type: "guide",)),
+                          Positioned(
+                            left: 10,
+                            top: 10,
+                            child:   IconButton(onPressed: (){
+                              // widget.key;
+                              _scaffoldKey.currentState!.openDrawer();
+                              // MyDrawer();
+                            }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
+                        ],
+                      ),
+                      // Stack(
+                      //   children: [
+                      //     _categoryFilter(userProfile.name, userProfile.email,"hotel"
+                      //     ),
+                      //     Positioned(
+                      //       left: 10,
+                      //       top: 30,
+                      //       child:   IconButton(onPressed: (){
+                      //         // widget.key;
+                      //         _scaffoldKey.currentState!.openDrawer();
+                      //         // MyDrawer();
+                      //       }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
                       //
-                      //     // return the ListView widget :
-                      //         : Center(child: CircularProgressIndicator());
-                      //   },
-                      // )
-                      _tripTab(userProfile.name, userProfile.email,
-                          userProfile.image),
-                      _categoryFilter(userProfile.name, userProfile.email,"car"),
-                      _categoryFilter(userProfile.name, userProfile.email,"hotel"),
-                      _categoryFilter(userProfile.name, userProfile.email,'guide'),
+                      //   ],
+                      // ),
+                      // Stack(
+                      //   children: [
+                      //     _categoryFilter(userProfile.name, userProfile.email,'guide'
+                      //     ),
+                      //     Positioned(
+                      //       left: 10,
+                      //       top: 30,
+                      //       child:   IconButton(onPressed: (){
+                      //         // widget.key;
+                      //         _scaffoldKey.currentState!.openDrawer();
+                      //         // MyDrawer();
+                      //       }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),)
+                      //
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -304,7 +535,7 @@ class _MyHomePageState extends State<MyHomePage>
                       Text(
                         'Offers',
                         style: TextStyle(
-                            color: Colors.green,
+                            color: AppConfig.tripColor,
                             fontWeight: FontWeight.bold,
                             fontSize: AppConfig.f3,
                             fontFamily: AppConfig.fontFamilyMedium),
@@ -342,7 +573,7 @@ class _MyHomePageState extends State<MyHomePage>
                       Text(
                         'Popular Cities',
                         style: TextStyle(
-                            color: Colors.black,
+                            color: AppConfig.tripColor,
                             fontWeight: FontWeight.bold,
                             fontSize: AppConfig.f3,
                             fontFamily: AppConfig.fontFamilyMedium),
@@ -416,6 +647,7 @@ class _MyHomePageState extends State<MyHomePage>
               ],
             ),
           ),
+
           // bottomNavigationBar: _buildBottomBar(),
         ),
       ),
@@ -430,402 +662,418 @@ class _MyHomePageState extends State<MyHomePage>
     properties.add(DiagnosticsProperty<AppConfig>('_appConfig', _appConfig));
   }
 
-  Widget _tripTab(name, email, image) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Container(
-            alignment: Alignment.topCenter,
-            // height: _appConfig.rH(40),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50.0),
-                  bottomRight: Radius.circular(50.0)),
-              image: DecorationImage(
-                image: NetworkImage('${AppConfig.srcLink}t.png'),
-                fit: BoxFit.cover,
+  Widget _tripTab(BuildContext buidCotext, name, email, image) {
+    var _scaffoldKey = GlobalKey<ScaffoldState>();
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: CustomDrawer.drawer(buidCotext, name,email,image),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.topCenter,
+              // height: _appConfig.rH(40),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0)),
+                image: DecorationImage(
+                  image: NetworkImage('${AppConfig.srcLink}t.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: _appConfig.rH(2),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: _appConfig.rHP(2),
-                    left: _appConfig.rHP(2.5),
-                    right: _appConfig.rHP(2.5)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        name != null
-                            ? FittedBox(
-                                child: Text(
-                                  "$name",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppConfig.f2,
-                                      color: Colors.white,
-                                      fontFamily: AppConfig.fontFamilyMedium),
-                                  textScaleFactor: 1,
-                                ),
-                              )
-                            : Text(
-                                "--",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: AppConfig.f2,
-                                  color: Colors.white,
-                                ),
-                                textScaleFactor: 1,
-                              ),
-                        Text(
-                          "${email}",
-                          style: TextStyle(
-                              fontSize: AppConfig.f5,
-                              color: Colors.white,
-                              fontFamily: AppConfig.fontFamilyRegular),
-                          textScaleFactor: 1,
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        NotificationPopUp(),
-                        PopUp()
-                        // Builder(
-                        //   builder: (context) => GestureDetector(
-                        //     child: PopUpMenu(
-                        //       menuList: [
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: Icon(
-                        //               CupertinoIcons.person,
-                        //             ),
-                        //             title: Text('Profile'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) =>
-                        //                          Profile()),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(Icons.message),
-                        //             title: const Text('Blogs'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => MyBlogs(
-                        //                           products: WebServices.blogItems(),
-                        //                         )),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(Icons.car_rental),
-                        //             title: const Text('Car'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => VehicleList(
-                        //                           products: WebServices.carItems(),
-                        //                         )),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(Icons.book),
-                        //             title: const Text('Guide'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => GuideList(
-                        //                         products: WebServices.tourGuideItems())),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(Icons.map),
-                        //             title: const Text('Map'),
-                        //             onTap: () {
-                        //               Navigator.pushNamed(
-                        //                   context, MyRoutes.map);
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(
-                        //               CupertinoIcons.list_dash,
-                        //             ),
-                        //             title: const Text('Wish List'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => WishList(
-                        //                           hireACar: WebServices.carWishlistItems(),
-                        //                           hotelBooking: WebServices.hotelWishlistItems(),
-                        //                       tourGuide: WebServices.tourGuideWishlistItems(),
-                        //                       trip: WebServices.tripWishlistItems(),
-                        //                         )),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(
-                        //               Icons.payment,
-                        //             ),
-                        //             title: const Text('Payment History'),
-                        //             onTap: () {
-                        //               Navigator.pushNamed(
-                        //                   context, MyRoutes.paymentHistory);
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: const Icon(
-                        //               Icons.reviews,
-                        //             ),
-                        //             title: const Text('Reviews'),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => HotelPage(
-                        //                           products: WebServices.hotelItems(),
-                        //                         )),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //         PopupMenuItem(
-                        //           child: ListTile(
-                        //             leading: Icon(Icons.logout),
-                        //             title: Text('Logout'),
-                        //             onTap: () async {
-                        //               SharedPreferences prefs = await SharedPreferences.getInstance();
-                        //               prefs.remove('email');
-                        //               setState(() {
-                        //                 _isSigningOut = true;
-                        //               });
-                        //               await Authentication.signOut(
-                        //                   context: context);
-                        //               setState(() {
-                        //                 _isSigningOut = false;
-                        //               });
-                        //               Navigator.of(context).pushReplacement(
-                        //                   _routeToSignInScreen());
-                        //             },
-                        //             // onTap: () async {
-                        //             //   await FacebookAuth.i.logOut();
-                        //             //
-                        //             //   setState(() {
-                        //             //     _appConfig.userData = null;
-                        //             //   });
-                        //             // },
-                        //           ),
-                        //         ),
-                        //       ],
-                        //       icon: const CircleAvatar(
-                        //         backgroundImage: AssetImage(
-                        //           'assets/images/user.png',
-                        //         ),
-                        //         maxRadius: 22,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    )
-                  ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: _appConfig.rH(2),
                 ),
-              ),
-              SizedBox(
-                height: _appConfig.rH(1),
-              ),
-              SizedBox(
-                height: _appConfig.rH(5),
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: _appConfig.rHP(2.5),
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppConfig.whiteColor,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(0, 5),
-                        blurRadius: 10,
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: _appConfig.rHP(2),
+                      left: _appConfig.rHP(2.5),
+                      right: _appConfig.rHP(2.5)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 30,),
+                          // IconButton(onPressed: (){
+                          //   _scaffoldKey.currentState!.openDrawer();
+                          //
+                          // }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              name != null
+                                  ? FittedBox(
+                                      child: Text(
+                                        "$name",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: AppConfig.f2,
+                                            color: Colors.white,
+                                            fontFamily: AppConfig.fontFamilyMedium),
+                                        textScaleFactor: 1,
+                                      ),
+                                    )
+                                  : Text(
+                                      "--",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppConfig.f2,
+                                        color: Colors.white,
+                                      ),
+                                      textScaleFactor: 1,
+                                    ),
+                              Text(
+                                "${email}",
+                                style: TextStyle(
+                                    fontSize: AppConfig.f5,
+                                    color: Colors.white,
+                                    fontFamily: AppConfig.fontFamilyRegular),
+                                textScaleFactor: 1,
+                              )
+                            ],
+                          ),
+                        ],
                       ),
+                      Row(
+                        children: [
+                          NotificationPopUp(),
+                          PopUp()
+                          // Builder(
+                          //   builder: (context) => GestureDetector(
+                          //     child: PopUpMenu(
+                          //       menuList: [
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: Icon(
+                          //               CupertinoIcons.person,
+                          //             ),
+                          //             title: Text('Profile'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) =>
+                          //                          Profile()),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(Icons.message),
+                          //             title: const Text('Blogs'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) => MyBlogs(
+                          //                           products: WebServices.blogItems(),
+                          //                         )),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(Icons.car_rental),
+                          //             title: const Text('Car'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) => VehicleList(
+                          //                           products: WebServices.carItems(),
+                          //                         )),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(Icons.book),
+                          //             title: const Text('Guide'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) => GuideList(
+                          //                         products: WebServices.tourGuideItems())),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(Icons.map),
+                          //             title: const Text('Map'),
+                          //             onTap: () {
+                          //               Navigator.pushNamed(
+                          //                   context, MyRoutes.map);
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(
+                          //               CupertinoIcons.list_dash,
+                          //             ),
+                          //             title: const Text('Wish List'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) => WishList(
+                          //                           hireACar: WebServices.carWishlistItems(),
+                          //                           hotelBooking: WebServices.hotelWishlistItems(),
+                          //                       tourGuide: WebServices.tourGuideWishlistItems(),
+                          //                       trip: WebServices.tripWishlistItems(),
+                          //                         )),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(
+                          //               Icons.payment,
+                          //             ),
+                          //             title: const Text('Payment History'),
+                          //             onTap: () {
+                          //               Navigator.pushNamed(
+                          //                   context, MyRoutes.paymentHistory);
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: const Icon(
+                          //               Icons.reviews,
+                          //             ),
+                          //             title: const Text('Reviews'),
+                          //             onTap: () {
+                          //               Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) => HotelPage(
+                          //                           products: WebServices.hotelItems(),
+                          //                         )),
+                          //               );
+                          //             },
+                          //           ),
+                          //         ),
+                          //         PopupMenuItem(
+                          //           child: ListTile(
+                          //             leading: Icon(Icons.logout),
+                          //             title: Text('Logout'),
+                          //             onTap: () async {
+                          //               SharedPreferences prefs = await SharedPreferences.getInstance();
+                          //               prefs.remove('email');
+                          //               setState(() {
+                          //                 _isSigningOut = true;
+                          //               });
+                          //               await Authentication.signOut(
+                          //                   context: context);
+                          //               setState(() {
+                          //                 _isSigningOut = false;
+                          //               });
+                          //               Navigator.of(context).pushReplacement(
+                          //                   _routeToSignInScreen());
+                          //             },
+                          //             // onTap: () async {
+                          //             //   await FacebookAuth.i.logOut();
+                          //             //
+                          //             //   setState(() {
+                          //             //     _appConfig.userData = null;
+                          //             //   });
+                          //             // },
+                          //           ),
+                          //         ),
+                          //       ],
+                          //       icon: const CircleAvatar(
+                          //         backgroundImage: AssetImage(
+                          //           'assets/images/user.png',
+                          //         ),
+                          //         maxRadius: 22,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      )
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search',
+                ),
+                SizedBox(
+                  height: _appConfig.rH(1),
+                ),
+                SizedBox(
+                  height: _appConfig.rH(5),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: _appConfig.rHP(2.5),
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppConfig.whiteColor,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(0, 5),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search',
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(onPressed: () async {
-                        await WebServices.tripSearchItems(_searchController.text)
-                            .then((value) {
-                          setState(() {
-                            allTrip = value;
+                        IconButton(onPressed: () async {
+                          await WebServices.tripSearchItems(_searchController.text)
+                              .then((value) {
+                            setState(() {
+                              allTrip = value;
+                            });
                           });
-                        });
-                        print("$allTrip");
-                        setState(() {
-                          if (allTrip.toString() != '[]'&&_searchController.text.isNotEmpty) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TripList(
-                                    allTrip: allTrip,
-                                  )),
-                            );
-                          } else {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return CustomDialog(
-                                    title: 'Not Found',
-                                    subtitle: 'Item not found in our Trips!',
-                                    primaryAction: () {
-                                      Navigator.pop(context);
-                                    },
-                                    primaryActionText: 'Okay',
-                                  );
-                                });
-                          }
-                        });
-                      },icon: Icon(Icons.search))
-                    ],
-                  ),
-                ),
-              ),
-              // SizedBox(
-              //   height: _appConfig.rH(5),
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: _appConfig.rHP(2.5),
-              //     ),
-              //     child: CupertinoSearchTextField(
-              //       prefixIcon: Center(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(5.0),
-              //           child: Icon(
-              //             Icons.search,
-              //             color: AppConfig.shadeColor,
-              //             size: _appConfig.rH(3),
-              //           ),
-              //         ),
-              //       ),
-              //       onChanged: (value) {},
-              //       backgroundColor: Colors.white,
-              //       borderRadius: BorderRadius.circular(30.0),
-              //     ),
-              //   ),
-              // ),
-              SizedBox(
-                height: _appConfig.rH(1),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Make Travel\nEasy\n',
-                      style: TextStyle(
-                          fontSize: AppConfig.f1,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: AppConfig.fontFamilyMedium),
-                      children: [
-                        TextSpan(
-                          text:
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue fermentum mi ac pretium. ',
-                          style: TextStyle(
-                              fontSize: AppConfig.f5,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: AppConfig.fontFamilyRegular),
-                        ),
+                          print("$allTrip");
+                          setState(() {
+                            if (allTrip.toString() != '[]'&&_searchController.text.isNotEmpty) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TripList(
+                                      allTrip: allTrip,
+                                    )),
+                              );
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CustomDialog(
+                                      title: 'Not Found',
+                                      subtitle: 'Item not found in our Trips!',
+                                      primaryAction: () {
+                                        Navigator.pop(context);
+                                      },
+                                      primaryActionText: 'Okay',
+                                    );
+                                  });
+                            }
+                          });
+                        },icon: Icon(Icons.search))
                       ],
                     ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: _appConfig.rW(2),
+                // SizedBox(
+                //   height: _appConfig.rH(5),
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(
+                //       horizontal: _appConfig.rHP(2.5),
+                //     ),
+                //     child: CupertinoSearchTextField(
+                //       prefixIcon: Center(
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(5.0),
+                //           child: Icon(
+                //             Icons.search,
+                //             color: AppConfig.shadeColor,
+                //             size: _appConfig.rH(3),
+                //           ),
+                //         ),
+                //       ),
+                //       onChanged: (value) {},
+                //       backgroundColor: Colors.white,
+                //       borderRadius: BorderRadius.circular(30.0),
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: _appConfig.rH(1),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Make Travel\nEasy\n',
+                        style: TextStyle(
+                            fontSize: AppConfig.f1,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: AppConfig.fontFamilyMedium),
+                        children: [
+                          TextSpan(
+                            text:
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue fermentum mi ac pretium. ',
+                            style: TextStyle(
+                                fontSize: AppConfig.f5,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: AppConfig.fontFamilyRegular),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
-                    // width: _appConfig.rW(40),
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                AppConfig.hotelColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                        child: Text(
-                          "View more",
-                          style: TextStyle(
-                              color: AppConfig.tripColor,
-                              fontSize: AppConfig.f4,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: AppConfig.fontFamilyRegular),
-                          textScaleFactor: 1,
-                        )),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: _appConfig.rW(2),
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: _appConfig.rHP(2.5)),
+                      // width: _appConfig.rW(40),
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  AppConfig.hotelColor),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                          child: Text(
+                            "View more",
+                            style: TextStyle(
+                                color: AppConfig.tripColor,
+                                fontSize: AppConfig.f4,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: AppConfig.fontFamilyRegular),
+                            textScaleFactor: 1,
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _categoryFilter(name, email, type) {
+  Widget _categoryFilter(name, email, type, ) {
+
     return SafeArea(
       child: Stack(
         children: [
@@ -845,27 +1093,38 @@ class _MyHomePageState extends State<MyHomePage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "$name",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppConfig.f2,
-                          color: AppConfig.whiteColor,
-                          fontFamily: AppConfig.fontFamilyMedium),
-                      textScaleFactor: 1,
+                    IconButton(onPressed: (){
+                      // widget.key;
+
+                    MyDrawer();
+                    }, icon: Icon(Icons.dehaze_sharp,color: AppConfig.whiteColor,)),
+                    SizedBox(height: 5,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "$name",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: AppConfig.f3,
+                              color: AppConfig.whiteColor,
+                              fontFamily: AppConfig.fontFamilyMedium),
+                          textScaleFactor: 1,
+                        ),
+                        Text(
+                          "$email",
+                          style: TextStyle(
+                              fontSize: AppConfig.f5,
+                              color: AppConfig.whiteColor,
+                              fontFamily: AppConfig.fontFamilyRegular),
+                          textScaleFactor: 1,
+                        )
+                      ],
                     ),
-                    Text(
-                      "$email",
-                      style: TextStyle(
-                          fontSize: AppConfig.f5,
-                          color: AppConfig.whiteColor,
-                          fontFamily: AppConfig.fontFamilyRegular),
-                      textScaleFactor: 1,
-                    )
                   ],
                 ),
                 Row(

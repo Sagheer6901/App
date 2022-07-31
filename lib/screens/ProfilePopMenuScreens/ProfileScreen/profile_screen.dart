@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -41,6 +42,9 @@ class _ProfileState extends State<Profile> {
     fetchData();
   }
 
+  List? tempDate;
+
+
   void fetchData() async {
     isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,6 +63,9 @@ class _ProfileState extends State<Profile> {
     prefs.setString("profileImage", userProfile.image.toString());
     prefs.setString("id", userProfile.id.toString());
     prefs.setString("name", userProfile.name.toString());
+    // tempDate = new DateFormat('EEE, M/d/y').parse("${userProfile.date}");
+    tempDate = userProfile.date.toString().split('-');
+    // tempDate = tempDate.split('-');
   }
 
   Future pickDate(BuildContext context) async {
@@ -97,11 +104,17 @@ class _ProfileState extends State<Profile> {
 //   // if failed,use refreshFailed()
 //   _refreshController.refreshCompleted();
 // },
+
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
     // final String? birthDay = widget.formatter!.format(userProfile.date!);
-
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+            statusBarColor: AppConfig.tripColor
+          //color set to transperent or set your own color
+        )
+    );
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: PreferredSize(
@@ -370,7 +383,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Icon(Icons.cake_outlined),
                                   ButtonHeaderWidget(
-                                      text: "${userProfile.date}",
+                                      tempDate: tempDate,
                                       // text: formatter.format(userProfile.date),
                                       // text: '${userProfile.date!.year}-${userProfile.date!.month}-${userProfile.date!.day}',
                                       onClicked: () {
@@ -580,15 +593,13 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     children: <Widget>[
                                       // userProfile.address!.isEmpty  || userProfile.address!= null || userProfile.address!= "null"?
-                                      FittedBox(
-                                        child: Text(
-                                          "${userProfile.address}",
-                                          style: TextStyle(
-                                              fontSize: AppConfig.f5,
-                                              fontFamily:
-                                              AppConfig.fontFamilyRegular),
-                                          textScaleFactor: 1,
-                                        ),
+                                      Text(
+                                        (userProfile.address!.isNotEmpty)?"${userProfile.address}":"Add Address",
+                                        style: TextStyle(
+                                            fontSize: AppConfig.f5,
+                                            fontFamily:
+                                            AppConfig.fontFamilyRegular),
+                                        textScaleFactor: 1,
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(right: 5),

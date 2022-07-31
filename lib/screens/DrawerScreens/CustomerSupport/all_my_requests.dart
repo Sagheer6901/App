@@ -53,14 +53,11 @@ class _AllRequestsState extends State<AllRequests> {
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent
-            //color set to transperent or set your own color
-            ));
+    _appConfig.statusBar();
     return Scaffold(
-      backgroundColor: AppConfig.tripColor,
+      // backgroundColor: AppConfig.tripColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(_appConfig.rH(25)), // Set this height
+        preferredSize: Size.fromHeight(_appConfig.rH(20)), // Set this height
         child: SafeArea(
           child: Container(
               height: _appConfig.rH(30),
@@ -116,8 +113,7 @@ class _AllRequestsState extends State<AllRequests> {
                         fontSize: AppConfig.f2,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontFamily: AppConfig.fontFamilyRegular
-                    ),
+                        fontFamily: AppConfig.fontFamilyRegular),
                   ),
                 ],
               )),
@@ -134,14 +130,15 @@ class _AllRequestsState extends State<AllRequests> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-                height: _appConfig.rH(72),
+                // height: _appConfig.rH(72),
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
-                    color: AppConfig.whiteColor,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30))),
+                    // color: AppConfig.whiteColor,
+                    // borderRadius: const BorderRadius.only(
+                    //     topRight: Radius.circular(30),
+                    //     topLeft: Radius.circular(30))
+                    ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -158,7 +155,8 @@ class _AllRequestsState extends State<AllRequests> {
                             style: TextStyle(
                                 fontSize: AppConfig.f4,
                                 fontWeight: FontWeight.w700,
-                                color: AppConfig.tripColor,fontFamily: AppConfig.fontFamilyRegular),
+                                color: AppConfig.tripColor,
+                                fontFamily: AppConfig.fontFamilyRegular),
                           ),
                         ),
                         Container(
@@ -174,7 +172,10 @@ class _AllRequestsState extends State<AllRequests> {
                               children: [
                                 Container(
                                   padding: EdgeInsets.all(5),
-                                  color: AppConfig.queryBackground,
+                                  decoration: BoxDecoration(
+                                      color: AppConfig.queryBackground,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5))),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -182,7 +183,13 @@ class _AllRequestsState extends State<AllRequests> {
                                       Container(
                                         width: 100,
                                         height: 50,
-                                        color: AppConfig.whiteColor,
+                                        // color: AppConfig.whiteColor,
+                                        decoration: BoxDecoration(
+                                            color: AppConfig.whiteColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(5))),
+
                                         child: CupertinoSearchTextField(
                                           prefixIcon: Icon(
                                             Icons.search,
@@ -218,11 +225,21 @@ class _AllRequestsState extends State<AllRequests> {
                                       ),
                                       Row(
                                         children: [
-                                          Text("Status: ",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
+                                          Text(
+                                            "Status: ",
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    AppConfig.fontFamilyRegular,
+                                                color: AppConfig.tripColor),
+                                          ),
                                           Container(
                                             width: 100,
                                             height: 50,
-                                            color: AppConfig.whiteColor,
+                                            decoration: BoxDecoration(
+                                                color: AppConfig.whiteColor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(5))),
                                             child: CupertinoSearchTextField(
                                               prefixIcon: Icon(
                                                 Icons.search,
@@ -273,7 +290,9 @@ class _AllRequestsState extends State<AllRequests> {
                                           child: Text(
                                         "Id",
                                         style: TextStyle(
-                                            color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular),
+                                            color: AppConfig.textColor,
+                                            fontFamily:
+                                                AppConfig.fontFamilyRegular),
                                       )),
                                       SizedBox(
                                         width: 10,
@@ -282,7 +301,9 @@ class _AllRequestsState extends State<AllRequests> {
                                         child: Text(
                                           "Subject",
                                           style: TextStyle(
-                                              color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular),
+                                              color: AppConfig.textColor,
+                                              fontFamily:
+                                                  AppConfig.fontFamilyRegular),
                                         ),
                                       ),
                                       SizedBox(
@@ -291,13 +312,17 @@ class _AllRequestsState extends State<AllRequests> {
                                       Expanded(
                                           child: Text("Created",
                                               style: TextStyle(
-                                                  color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular))),
+                                                  color: AppConfig.textColor,
+                                                  fontFamily: AppConfig
+                                                      .fontFamilyRegular))),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text("Status",
                                           style: TextStyle(
-                                              color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular)),
+                                              color: AppConfig.textColor,
+                                              fontFamily:
+                                                  AppConfig.fontFamilyRegular)),
                                     ],
                                   ),
                                 ),
@@ -305,8 +330,8 @@ class _AllRequestsState extends State<AllRequests> {
                                   height: 15,
                                   thickness: 1,
                                 ),
-                                SizedBox(
-                                  height: _appConfig.rH(35),
+                                Container(
+                                  // height: _appConfig.rH(35),
                                   child: FutureBuilder<List<TicketModel>>(
                                     future: widget.products,
                                     builder: (context, snapshot) {
@@ -350,7 +375,6 @@ class RequestCard extends StatefulWidget with WidgetsBindingObserver {
 }
 
 class _RequestCardState extends State<RequestCard> {
-
   var notiCountRequest;
   @override
   void initState() {
@@ -358,8 +382,9 @@ class _RequestCardState extends State<RequestCard> {
     super.initState();
     checkNoti("${widget.item!.id}");
   }
+
   checkNoti(ticketId) async {
-    List<String> item=[];
+    List<String> item = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await WebServices.productsNotiEnquiry(ticketId).first.then((categories) {
@@ -367,7 +392,7 @@ class _RequestCardState extends State<RequestCard> {
       //   oldEnquiryCount = prefs.getInt('notification_enquiry_count')!;
       // }
       // _categories = categories;
-      categories. forEach((element){
+      categories.forEach((element) {
         item.add("${element.notiCount}");
         // print("${element.title}");
       });
@@ -375,12 +400,10 @@ class _RequestCardState extends State<RequestCard> {
       print("request in enquiry ${item.first}item");
       setState(() {
         notiCountRequest = item.first;
-
       });
       // print("list of items ${enquiryItems.first}}");
-    });  }
-
-
+    });
+  }
 
   late AppConfig _appConfig;
 
@@ -409,45 +432,60 @@ class _RequestCardState extends State<RequestCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: Row(
+                    Expanded(
+                        child: Row(
                       children: [
-                        Text("${widget.item!.id}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
-                        notiCountRequest!=null?Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: new BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 14,
-                            minHeight: 14,
-                          ),
-                          child: notiCountRequest!=0?Text(
-                            '${notiCountRequest}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                            ),
-                            textAlign: TextAlign.center,
-                          ):Text(
-                            '0',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ):SizedBox(),
+                        Text(
+                          "${widget.item!.id}",
+                          style: TextStyle(
+                              fontFamily: AppConfig.fontFamilyRegular),
+                        ),
+                        notiCountRequest != null
+                            ? Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: notiCountRequest != 0
+                                    ? Text(
+                                        '${notiCountRequest}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Text(
+                                        '0',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                              )
+                            : SizedBox(),
                       ],
                     )),
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text("${widget.item!.issue}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                    Expanded(
+                        child: Text("${widget.item!.issue}",
+                            style: TextStyle(
+                                fontFamily: AppConfig.fontFamilyRegular))),
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text("${widget.item!.date}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                    Expanded(
+                        child: Text("${widget.item!.date}",
+                            style: TextStyle(
+                                fontFamily: AppConfig.fontFamilyRegular))),
                     SizedBox(
                       width: 10,
                     ),
@@ -456,7 +494,10 @@ class _RequestCardState extends State<RequestCard> {
                       padding: EdgeInsets.all(_appConfig.rH(0.2)),
                       // width: 50,
                       color: AppConfig.carColor,
-                      child: Center(child: Text("${widget.item!.status}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                      child: Center(
+                          child: Text("${widget.item!.status}",
+                              style: TextStyle(
+                                  fontFamily: AppConfig.fontFamilyRegular))),
                     ),
                   ],
                 ),
@@ -481,55 +522,38 @@ class _RequestCardState extends State<RequestCard> {
                             ),
                           ],
                         ),
-                        child: widget.item!.file!=null?Container(
-                          width: _appConfig.rW(40),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              extension[1] == "jpg" ||
-                                      extension[1] == "png" ||
-                                      extension[1] == "jpeg"
-                                  ? Container(
-                                      height: _appConfig.rH(35),
-                                      width: _appConfig.rW(70),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppConfig.carColor),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        child: Image.network(
-                                          "${AppConfig.srcLink}${widget.item!.file}",
-                                          height: _appConfig.rH(1.5),
-                                          width: _appConfig.rH(1.5),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ))
-                                  : Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: AppConfig.queryBackground,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.black12,
-                                        //     offset: Offset(0, 5),
-                                        //     blurRadius: 10,
-                                        //   ),
-                                        // ],
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text("${widget.item!.file}",
-                                              style: TextStyle(
-                                                  fontSize: AppConfig.f5,fontFamily: AppConfig.fontFamilyRegular),
-                                              textScaleFactor: 1),
-                                          Container(
-                                            width: double.infinity,
+                        child: widget.item!.file != null
+                            ? Container(
+                                width: _appConfig.rW(40),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    extension[1] == "jpg" ||
+                                            extension[1] == "png" ||
+                                            extension[1] == "jpeg"
+                                        ? Container(
+                                            height: _appConfig.rH(35),
+                                            width: _appConfig.rW(70),
                                             decoration: BoxDecoration(
-                                              color: AppConfig.shadeColor,
+                                                shape: BoxShape.circle,
+                                                color: AppConfig.carColor),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10)),
+                                              child: Image.network(
+                                                "${AppConfig.srcLink}${widget.item!.file}",
+                                                height: _appConfig.rH(1.5),
+                                                width: _appConfig.rH(1.5),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ))
+                                        : Container(
+                                            padding: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: AppConfig.queryBackground,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10)),
                                               // boxShadow: [
@@ -540,74 +564,115 @@ class _RequestCardState extends State<RequestCard> {
                                               //   ),
                                               // ],
                                             ),
-                                            child: Icon(
-                                              Icons.attachment_outlined,
-                                              size: _appConfig.rW(7),
-                                              color: AppConfig.queryBackground,
+                                            child: Column(
+                                              children: [
+                                                Text("${widget.item!.file}",
+                                                    style: TextStyle(
+                                                        fontSize: AppConfig.f5,
+                                                        fontFamily: AppConfig
+                                                            .fontFamilyRegular),
+                                                    textScaleFactor: 1),
+                                                Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    color: AppConfig.shadeColor,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                    // boxShadow: [
+                                                    //   BoxShadow(
+                                                    //     color: Colors.black12,
+                                                    //     offset: Offset(0, 5),
+                                                    //     blurRadius: 10,
+                                                    //   ),
+                                                    // ],
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.attachment_outlined,
+                                                    size: _appConfig.rW(7),
+                                                    color: AppConfig
+                                                        .queryBackground,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
+                                    SizedBox(
+                                      height: _appConfig.rH(1),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: DownloadFile(
+                                        platform: platform,
+                                        name: "${widget.item!.file}",
+                                        link:
+                                            "${AppConfig.srcLink}${widget.item!.file}",
                                       ),
                                     ),
-                              SizedBox(
-                                height: _appConfig.rH(1),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: DownloadFile(platform: platform,name: "${widget.item!.file}",link: "${AppConfig.srcLink}${widget.item!.file}",),
-                              ),
-                              // SizedBox(
-                              //     height: 100,
-                              //     child: Builder(
-                              //         builder: (context) => _isLoading
-                              //             ? new Center(
-                              //           child: new CircularProgressIndicator(),
-                              //         )
-                              //             : _permissionReady
-                              //             ? _buildDownloadList()
-                              //             : _buildNoPermissionWarning()),),
+                                    // SizedBox(
+                                    //     height: 100,
+                                    //     child: Builder(
+                                    //         builder: (context) => _isLoading
+                                    //             ? new Center(
+                                    //           child: new CircularProgressIndicator(),
+                                    //         )
+                                    //             : _permissionReady
+                                    //             ? _buildDownloadList()
+                                    //             : _buildNoPermissionWarning()),),
 
-                              Text("Attachment${widget.item!.file}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))
-                            ],
-                          ),
-                        ):Center(child: CircularProgressIndicator(),)),
+                                    Text("Attachment${widget.item!.file}",
+                                        style: TextStyle(
+                                            fontFamily:
+                                                AppConfig.fontFamilyRegular))
+                                  ],
+                                ),
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              )),
                     ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                AppConfig.textColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ))),
-                        onPressed: widget.item!.status == "pending"
-                            ? () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext ctx) {
-                                      return StatusUpdateDialogBox(
-                                        titleText: "Status Update",
-                                        description:
-                                            "Status has been updated Successfully!",
-                                        onPressed: () {
-                                          setState(() {
-                                            WebServices.sendTicketStatus(
-                                                "${widget.item!.id}");
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AllRequests(
-                                                        products: WebServices
-                                                            .getGetTickets(),
-                                                      )),
-                                            );
-                                          });
-                                        },
-                                      );
-                                    });
-                              }
-                            : () {},
-                        child: Text("Approve",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular)),),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppConfig.textColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ))),
+                      onPressed: widget.item!.status == "pending"
+                          ? () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext ctx) {
+                                    return StatusUpdateDialogBox(
+                                      titleText: "Status Update",
+                                      description:
+                                          "Status has been updated Successfully!",
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        setState(() {
+                                          WebServices.sendTicketStatus(
+                                              "${widget.item!.id}");
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AllRequests(
+                                                      products: WebServices
+                                                          .getGetTickets(),
+                                                    )),
+                                          );
+                                        });
+                                      },
+                                    );
+                                  });
+                            }
+                          : () {},
+                      child: Text("Approve",
+                          style: TextStyle(
+                              fontFamily: AppConfig.fontFamilyRegular)),
+                    ),
                   ],
                 ),
                 Divider(
@@ -621,46 +686,58 @@ class _RequestCardState extends State<RequestCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: Row(
+                    Expanded(
+                        child: Row(
                       children: [
-                        Text("${widget.item!.id}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular)),
-                        notiCountRequest!=null?Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: new BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 14,
-                            minHeight: 14,
-                          ),
-                          child: notiCountRequest!=0?Text(
-                            '${notiCountRequest}',
+                        Text("${widget.item!.id}",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                            ),
-                            textAlign: TextAlign.center,
-                          ):Text(
-                            '0',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ):SizedBox(),
-
+                                fontFamily: AppConfig.fontFamilyRegular)),
+                        notiCountRequest != null
+                            ? Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: notiCountRequest != 0
+                                    ? Text(
+                                        '${notiCountRequest}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Text(
+                                        '0',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                              )
+                            : SizedBox(),
                       ],
                     )),
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text("${widget.item!.issue}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                    Expanded(
+                        child: Text("${widget.item!.issue}",
+                            style: TextStyle(
+                                fontFamily: AppConfig.fontFamilyRegular))),
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text("${widget.item!.date}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                    Expanded(
+                        child: Text("${widget.item!.date}",
+                            style: TextStyle(
+                                fontFamily: AppConfig.fontFamilyRegular))),
                     SizedBox(
                       width: 10,
                     ),
@@ -669,7 +746,10 @@ class _RequestCardState extends State<RequestCard> {
                       padding: EdgeInsets.all(_appConfig.rH(0.2)),
                       // width: 50,
                       color: AppConfig.carColor,
-                      child: Center(child: Text("${widget.item!.status}",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                      child: Center(
+                          child: Text("${widget.item!.status}",
+                              style: TextStyle(
+                                  fontFamily: AppConfig.fontFamilyRegular))),
                     ),
                   ],
                 ),
@@ -709,7 +789,9 @@ class _RequestCardState extends State<RequestCard> {
                                 });
                           }
                         : () {},
-                    child: Text("Approve",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular))),
+                    child: Text("Approve",
+                        style: TextStyle(
+                            fontFamily: AppConfig.fontFamilyRegular))),
                 Divider(
                   height: 25,
                   thickness: 1,
@@ -718,15 +800,7 @@ class _RequestCardState extends State<RequestCard> {
             ),
     );
   }
-
-
-
-
-
 }
-
-
-
 
 class TicketItems extends StatelessWidget {
   final List<TicketModel>? items;

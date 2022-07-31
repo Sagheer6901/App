@@ -2,6 +2,7 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/functions/app_config.dart';
 import 'package:untitled/functions/custom_btn.dart';
@@ -37,14 +38,20 @@ class _ForgetPassState extends State<ForgetPass> {
     // TODO: implement initState
     super.initState();
   }
+  bool v = false;
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+            statusBarColor: AppConfig.tripColor
+          //color set to transperent or set your own color
+        )
+    );
     return Scaffold(
-      backgroundColor: AppConfig.tripColor,
+      backgroundColor: AppConfig.whiteColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(_appConfig.rH(25)), // Set this height
+        preferredSize: Size.fromHeight(_appConfig.rH(20)), // Set this height
         child: SafeArea(
           child: Container(
               height: _appConfig.rH(30),
@@ -62,6 +69,7 @@ class _ForgetPassState extends State<ForgetPass> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -117,7 +125,18 @@ class _ForgetPassState extends State<ForgetPass> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Card(
+                SizedBox(
+                  height: 30,
+                ),
+                Image.asset(
+                  "assets/images/traboon_logo.png",
+                  height: _appConfig.rH(30),
+                ),
+                SizedBox(
+                  height: _appConfig.rH(10),
+                ),
+                v==false?Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Padding(
@@ -132,13 +151,16 @@ class _ForgetPassState extends State<ForgetPass> {
                         myauth.setConfig(
                           appEmail: "ahmedsubhan741@gmail.com",
                           appName: "Email Verification OTP",
-                          userEmail: email.text,
+                          userEmail: email.text.trim(),
                         );
                         if (await myauth.sendOTP() == true) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text("OTP has been sent"),
                           ));
+                          setState(() {
+                            v = true;
+                          });
                         } else {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
@@ -149,9 +171,10 @@ class _ForgetPassState extends State<ForgetPass> {
                       SizedBox(height: 10,)
                     ],
                   ),
-                ),
-                SizedBox(height: 20,),
-                Card(
+                ):SizedBox(),
+                // SizedBox(height: 20,),
+                v==true?Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Padding(
@@ -164,7 +187,7 @@ class _ForgetPassState extends State<ForgetPass> {
                       CustomBtn("Verify", 30, AppConfig.hotelColor,textColor: AppConfig.tripColor,    onPressed: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         prefs.setString("email", email.text);
-                        if (await myauth.verifyOTP(otp: otp.text) == true) {
+                        if (await myauth.verifyOTP(otp: otp.text.trim()) == true) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                                 builder: (context) => MaterialApp(        debugShowCheckedModeBanner: false,
@@ -184,7 +207,7 @@ class _ForgetPassState extends State<ForgetPass> {
                       SizedBox(height: 10,)
                     ],
                   ),
-                )
+                ):SizedBox()
               ],
             ),
           ),

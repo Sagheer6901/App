@@ -14,10 +14,11 @@ import 'package:untitled/screens/NavigationScreens/CheckoutScreen/webview.dart';
 
 import '../../DrawerScreens/PaymentScreens/payment_methods.dart';
 
-enum PaymentsMethods { paypal, jazzcash, easypaisa, easypaisa_card }
+enum PaymentsMethods { paypal, jazzcash, easypaisa, easypaisa_card ,nomethod}
 
 class CheckOut extends StatefulWidget {
   String? title, name, type,bookingType, img;
+  var orderIds,orderTypes;
   var id, contact, checkIn, checkOut, orderId, price, totalPrice, days;
   CheckOut(
       {Key? key,
@@ -31,6 +32,8 @@ class CheckOut extends StatefulWidget {
       this.checkIn,
       this.checkOut,
       this.orderId,
+        this.orderIds,
+        this.orderTypes,
       this.price,
       this.days,
       this.totalPrice})
@@ -41,7 +44,7 @@ class CheckOut extends StatefulWidget {
 }
 
 class _CheckOutState extends State<CheckOut> {
-  PaymentsMethods _method = PaymentsMethods.paypal;
+  PaymentsMethods _method = PaymentsMethods.nomethod;
   var method;
   late AppConfig _appConfig;
   // print("$amount,$storeId,$orderId, $postBackURL, $paymentMethod,$paymentMethod, $email, $contact, $mercahnt");
@@ -172,11 +175,11 @@ class _CheckOutState extends State<CheckOut> {
                               fontSize: AppConfig.f3,
                               fontWeight: FontWeight.w500,
                               color: AppConfig.whiteColor)),
-                      Text("${widget.contact}",
+                      widget.contact!=null?Text("${widget.contact}",
                           style: TextStyle(
                               fontSize: AppConfig.f3,
                               fontWeight: FontWeight.w500,
-                              color: AppConfig.whiteColor)),
+                              color: AppConfig.whiteColor)):SizedBox(),
 
                       // Image(
                       //   image: AssetImage(
@@ -643,90 +646,190 @@ class _CheckOutState extends State<CheckOut> {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         var eamil = prefs.getString("email");
-                        if (method == 'card' || method == "easypaisa") {
-                          await WebServices.easypaisform(
-                                  "$method",
-                                  "${widget.totalPrice}",
-                                  "${widget.orderId}",
-                                  "$eamil",
-                                  "${widget.contact}",
-                                  "${widget.bookingType}")
-                              .then((value) {
-                            print(value);
-                            // checkOutDetails = value;
-                            for (var element in value) {
-                              amount = element.amount;
-                              storeId = element.storeId;
-                              pbUrl = element.postBackUrl;
-                              orderId = element.orderRefNum;
-                              payMethod = element.paymentMethod;
-                              email = element.emailAddr;
-                              contact = element.mobileNum;
-                              merchant = element.merchantHashedReq;
-                              transactionURl1 = element.transactionPostUrl1;
-                            }
-                            // print(checkOutDetails);
-                          });
-                          // print(checkOutDetails);
-                          var url;
-                          await WebServices.easypaisaAuthToken(
-                                  "$transactionURl1",
-                                  "$amount",
-                                  "$storeId",
-                                  "$orderId",
-                                  "$pbUrl",
-                                  "$payMethod",
-                                  "$email",
-                                  "$contact",
-                                  "$merchant")
-                              .then((value) {
-                            url = value;
-                            print("url : $url");
-                          });
-                          var authToken;
-                          await WebServices.easypaisaGetLastData(url)
-                              .then((value) {
-                            for (var element in value) {
-                              pbUrl = element.postBackURL2;
-                              pbUrl = "${pbUrl}&booking_type=${widget.bookingType}";
-                              transactionURl1 = element.transactionPostURL2;
-                              authToken = element.authToken;
-                            }
-                          });
-                          // await WebServices.easypaisaConfirm(transactionURl1,pbUrl,authToken).then((value) {
-                          //   url = value;
-                          // });
+    if (widget.bookingType == "car" || widget.bookingType == "hotel" || widget.bookingType == "guide") {
+      if (method == 'card' || method == "easypaisa") {
 
-                          setState(() {
-                            print(
-                                "url2: $transactionURl1?postBackURL=$pbUrl&auth_token=$authToken");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WebViewExample(
-                                          pMethod: "$method",
-                                          type: "${widget.bookingType}",
-                                          orderIds: "${widget.orderId}",
-                                          totalAmount: "${widget.totalPrice}",
-                                          url:
-                                              '$transactionURl1?postBackURL=$pbUrl&auth_token=$authToken',
-                                        )));
-                          });
-                        }
-                        else if (method == 'paypal') {
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WebViewExample(
-                                    pMethod: "$method",
-                                    type: "${widget.bookingType}",
-                                    orderIds:"${widget.orderId}",
-                                    totalAmount: "${widget.totalPrice}",
-                                    url:
-                                    'https://mobicell.net/Yaseo/paypal-payment/first.php?order_id=${widget.orderId}&&price=${widget.totalPrice}',
-                                  )));
-                        }
+
+
+        await WebServices.easypaisform(
+            "$method",
+            "${widget.totalPrice}",
+            "${widget.orderId}",
+            "$eamil",
+            "${widget.contact}",
+            "${widget.bookingType}")
+            .then((value) {
+          print(value);
+          // checkOutDetails = value;
+          for (var element in value) {
+            amount = element.amount;
+            storeId = element.storeId;
+            pbUrl = element.postBackUrl;
+            orderId = element.orderRefNum;
+            payMethod = element.paymentMethod;
+            email = element.emailAddr;
+            contact = element.mobileNum;
+            merchant = element.merchantHashedReq;
+            transactionURl1 = element.transactionPostUrl1;
+          }
+          // print(checkOutDetails);
+        });
+        // print(checkOutDetails);
+        var url;
+        await WebServices.easypaisaAuthToken(
+            "$transactionURl1",
+            "$amount",
+            "$storeId",
+            "$orderId",
+            "$pbUrl",
+            "$payMethod",
+            "$email",
+            "$contact",
+            "$merchant")
+            .then((value) {
+          url = value;
+          print("url : $url");
+        });
+        var authToken;
+        await WebServices.easypaisaGetLastData(url)
+            .then((value) {
+          for (var element in value) {
+            pbUrl = element.postBackURL2;
+            pbUrl = "${pbUrl}&booking_type=${widget.bookingType}";
+            transactionURl1 = element.transactionPostURL2;
+            authToken = element.authToken;
+          }
+        });
+        // await WebServices.easypaisaConfirm(transactionURl1,pbUrl,authToken).then((value) {
+        //   url = value;
+        // });
+
+        print(" ordersss ${widget.orderTypes} ${widget.orderIds}");
+        setState(() {
+          print(
+              "url2: $transactionURl1?postBackURL=$pbUrl&auth_token=$authToken");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WebViewExample(
+                    pMethod: "$method",
+                    type: "${widget.bookingType}",
+                    orderIds: "${widget.orderId}",
+                    ordersId: "${widget.orderIds}",
+                    orderTypes:"${widget.orderTypes}",
+                    totalAmount: "${widget.totalPrice}",
+                    url:
+                    '$transactionURl1?postBackURL=$pbUrl&auth_token=$authToken',
+                  )));
+        });
+      }
+      else if (method == 'paypal') {
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebViewExample(
+                  pMethod: "$method",
+                  type: "${widget.bookingType}",
+                  orderIds:"${widget.orderId}",
+                  totalAmount: "${widget.totalPrice}",
+                  url:
+                  'https://mobicell.net/Yaseo/paypal-payment/first.php?order_id=${widget.orderId}&&price=${widget.totalPrice}',
+                )));
+      }
+    }
+    else{
+      if (method == 'card' || method == "easypaisa") {
+        await WebServices.easypaisform(
+            "$method",
+            "${widget.totalPrice}",
+            "${widget.orderIds}",
+            "$eamil",
+            "${widget.contact}",
+            "${widget.bookingType}")
+            .then((value) {
+          print(value);
+          // checkOutDetails = value;
+          for (var element in value) {
+            amount = element.amount;
+            storeId = element.storeId;
+            pbUrl = element.postBackUrl;
+            orderId = element.orderRefNum;
+            payMethod = element.paymentMethod;
+            email = element.emailAddr;
+            contact = element.mobileNum;
+            merchant = element.merchantHashedReq;
+            transactionURl1 = element.transactionPostUrl1;
+          }
+          // print(checkOutDetails);
+        });
+        // print(checkOutDetails);
+        var url;
+        await WebServices.easypaisaAuthToken(
+            "$transactionURl1",
+            "$amount",
+            "$storeId",
+            "${widget.orderIds}",
+            "$pbUrl",
+            "$payMethod",
+            "$email",
+            "$contact",
+            "$merchant")
+            .then((value) {
+          url = value;
+          print("url : $url");
+        });
+        var authToken;
+        await WebServices.easypaisaGetLastData(url)
+            .then((value) {
+          for (var element in value) {
+            pbUrl = element.postBackURL2;
+            pbUrl = "${pbUrl}&booking_type=${widget.bookingType}";
+            transactionURl1 = element.transactionPostURL2;
+            authToken = element.authToken;
+          }
+        });
+        // await WebServices.easypaisaConfirm(transactionURl1,pbUrl,authToken).then((value) {
+        //   url = value;
+        // });
+
+        print(" ordersss ${widget.orderTypes} ${widget.orderIds}");
+        setState(() {
+          print(
+              "url2: $transactionURl1?postBackURL=$pbUrl&auth_token=$authToken");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WebViewExample(
+                    pMethod: "$method",
+                    type: "${widget.bookingType}",
+                    orderIds: "${widget.orderId}",
+                    ordersId: "${widget.orderIds}",
+                    orderTypes:"${widget.orderTypes}",
+                    totalAmount: "${widget.totalPrice}",
+                    url:
+                    '$transactionURl1?postBackURL=$pbUrl&auth_token=$authToken',
+                  )));
+        });
+      }
+      else if (method == 'paypal') {
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebViewExample(
+                  pMethod: "$method",
+                  type: "${widget.bookingType}",
+                  orderIds:"${widget.orderIds}",
+                  orderTypes: "${widget.orderTypes}",
+                  totalAmount: "${widget.totalPrice}",
+                  url:
+                  'https://mobicell.net/Yaseo/paypal-payment/first.php?order_id=${widget.orderIds}&price=${widget.totalPrice}',
+                )));
+      }
+    }
+
                       },
                     )
                   ],

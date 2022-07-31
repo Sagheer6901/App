@@ -93,7 +93,7 @@ class _OrderHistoryListState extends State<OrderHistoryList> {
                           style: TextStyle(
                               fontSize: AppConfig.f4,
                               fontWeight: FontWeight.bold,
-                              color: AppConfig.carColor,
+                              color: AppConfig.tripColor,
                               fontFamily: AppConfig.fontFamilyMedium),
                           textScaleFactor: 1,
                         ),

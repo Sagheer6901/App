@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/functions/app_config.dart';
+import 'package:untitled/functions/custom_dialog.dart';
 import 'package:untitled/functions/functions.dart';
 import 'package:untitled/models/Authentication/register.dart';
 import 'package:untitled/screens/AuthenticationScreens/GoogleAuth/goog_signin_btn.dart';
@@ -33,6 +34,19 @@ class _SignUpPage extends State<SignUpScreen> {
   TextEditingController confirmPass = TextEditingController();
 
   TextEditingController userContact = TextEditingController();
+  bool _obscureText = true;
+  bool _obscureText2 = true;
+
+  String? _password;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }  void _toggle2() {
+    setState(() {
+      _obscureText2 = !_obscureText2;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +95,9 @@ class _SignUpPage extends State<SignUpScreen> {
                                 bottom: 10, left: 10, right: 10),
                             child: TextFormField(
                                 controller: userFirstName,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.text,
+                                style: TextStyle(
+                                    fontFamily: AppConfig.fontFamilyRegular),
                                 decoration: buildInputDecoration(
                                   Icons.face_outlined,
                                   'First name',
@@ -94,11 +110,13 @@ class _SignUpPage extends State<SignUpScreen> {
                                 }),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 10,
-                                bottom: 10, left: 10, right: 10),
+                            padding: const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 10, right: 10),
                             child: TextFormField(
                                 controller: userLastName,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.text,
+                                style: TextStyle(
+                                    fontFamily: AppConfig.fontFamilyRegular),
                                 decoration: buildInputDecoration(
                                   Icons.face_retouching_natural,
                                   'Last name',
@@ -116,6 +134,8 @@ class _SignUpPage extends State<SignUpScreen> {
                             child: TextFormField(
                               controller: userEmail,
                               keyboardType: TextInputType.emailAddress,
+                              style: TextStyle(
+                                  fontFamily: AppConfig.fontFamilyRegular),
                               decoration: buildInputDecoration(
                                 Icons.email,
                                 'Enter email',
@@ -142,6 +162,8 @@ class _SignUpPage extends State<SignUpScreen> {
                             child: TextFormField(
                               controller: userContact,
                               keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  fontFamily: AppConfig.fontFamilyRegular),
                               decoration: buildInputDecoration(
                                 Icons.phone_android_outlined,
                                 'Mobile number',
@@ -157,39 +179,72 @@ class _SignUpPage extends State<SignUpScreen> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 10, bottom: 10, left: 10, right: 10),
-                            child: TextFormField(
-                              controller: userPass,
-                              keyboardType: TextInputType.text,
-                              decoration: buildInputDecoration(
-                                Icons.lock,
-                                'Password',
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty || value.length < 8) {
-                                  return "Password must be 8 character long";
-                                }
-                                return null;
-                              },
-                              obscureText: true,
+                            child: Stack(
+                              children: [
+                                TextFormField(
+                                  controller: userPass,
+                                  keyboardType: TextInputType.text,
+                                  style: TextStyle(
+                                      fontFamily: AppConfig.fontFamilyRegular),
+                                  decoration: buildInputDecoration(
+                                    Icons.lock,
+                                    'Password',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 8) {
+                                      return "Password must be 8 character long";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (val) => _password = val,
+                                  obscureText: _obscureText,
+                                ),
+                                Positioned(
+                                  right: 10,
+                                  child: IconButton(
+                                      onPressed: _toggle,
+                                      // color: AppConfig.whiteColor,
+                                      icon: Icon(_obscureText
+                                          ? Icons.remove_red_eye_rounded
+                                          : Icons.remove_red_eye_rounded)),
+                                )
+                              ],
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 10, bottom: 10, left: 10, right: 10),
-                            child: TextFormField(
-                              controller: confirmPass,
-                              keyboardType: TextInputType.text,
-                              decoration: buildInputDecoration(
-                                Icons.lock,
-                                'Confirm Password',
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty || value.length < 8 && confirmPass.text ==userPass.text) {
-                                  return "Invalid confirm Password";
-                                }
-                                return null;
-                              },
-                              obscureText: true,
+                            child: Stack(
+                              children: [
+                                TextFormField(
+                                  controller: confirmPass,
+                                  keyboardType: TextInputType.text,
+                                  style: TextStyle(
+                                      fontFamily: AppConfig.fontFamilyRegular),
+                                  decoration: buildInputDecoration(
+                                    Icons.lock,
+                                    'Confirm Password',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty ||
+                                        value.length < 8 &&
+                                            confirmPass.text == userPass.text) {
+                                      return "Invalid confirm Password";
+                                    }
+                                    return null;
+                                  },
+                                  obscureText: _obscureText2,                                ),
+                                Positioned(
+                                  right: 10,
+                                  child: IconButton(
+                                      onPressed: _toggle2,
+                                      // color: AppConfig.whiteColor,
+                                      icon: Icon(_obscureText2
+                                          ? Icons.remove_red_eye_rounded
+                                          : Icons.remove_red_eye_rounded)),
+                                )
+
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -209,20 +264,43 @@ class _SignUpPage extends State<SignUpScreen> {
                               changeButtton = true;
                             });
                             setState(() {
-                              WebServices.register(userFirstName.text,userLastName.text,userEmail.text,userPass.text,userContact.text,null).then((value) async {
+                              WebServices.register(
+                                      userFirstName.text,
+                                      userLastName.text,
+                                      userEmail.text,
+                                      userPass.text,
+                                      userContact.text,
+                                      null)
+                                  .then((value) async {
                                 print("response: $value");
                                 if (value == "register_success") {
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
                                   prefs.setString('email', userEmail.text);
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                        builder: (context) => NavigationScreen()),
+                                        builder: (context) =>
+                                            NavigationScreen()),
                                   );
                                 }
-                              });                        });
+                                else if(value=="Duplicate entry 'sagheerrajper619@gmail.com' for key 'email'"){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return CustomDialog(
+                                          title: 'User',
+                                          subtitle: 'Already Exist!',
+                                          primaryAction: () {
+                                            Navigator.pop(context);
+                                          },
+                                          primaryActionText: 'Okay',
+                                        );
+                                      });
+                                }
+                              });
+                            });
                           }
                           // register();
-
                         },
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
@@ -231,24 +309,25 @@ class _SignUpPage extends State<SignUpScreen> {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ))),
-                        child: const Text(
+                        child: Text(
                           "Sign Up",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: AppConfig.fontFamilyRegular),
                         )),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Center(
+                  Center(
                     child: Text(
                       'or connect with',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                          fontFamily: AppConfig.fontFamilyMedium),
                     ),
                   ),
                   const SizedBox(
@@ -296,12 +375,15 @@ class _SignUpPage extends State<SignUpScreen> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
-                                text: 'Already have account',
-                              ),
+                              TextSpan(
+                                  text: 'Already have account',
+                                  style: TextStyle(
+                                      fontFamily: AppConfig.fontFamilyRegular)),
                               TextSpan(
                                 text: '  Login',
-                                style: TextStyle(color: Colors.yellow),
+                                style: TextStyle(
+                                    color: Colors.yellow,
+                                    fontFamily: AppConfig.fontFamilyRegular),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context).pushReplacement(
@@ -314,7 +396,6 @@ class _SignUpPage extends State<SignUpScreen> {
                           ),
                         ),
                       )
-
                     ],
                   )
                 ],

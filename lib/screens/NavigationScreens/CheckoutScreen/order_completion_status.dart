@@ -83,7 +83,7 @@ class _OrderCompletionStatusState extends State<OrderCompletionStatus> {
                             textScaleFactor: 1,
                           ),
                           Text(
-                            "${widget.pStatus}"=="0"?"Failed":"Success",
+                            "${widget.msg}"=="0"?"Failed":"Success",
                             style: TextStyle(
                                 fontFamily: AppConfig.fontFamilyRegular,
                                 fontSize: AppConfig.f4),

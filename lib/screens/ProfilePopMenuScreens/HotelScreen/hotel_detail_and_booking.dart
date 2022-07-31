@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/functions/app_config.dart';
 import 'package:untitled/functions/custom_btn.dart';
@@ -313,12 +314,13 @@ class _HotelDetailAndBookingState extends State<HotelDetailAndBooking>
                           color: AppConfig.tripColor),
                       tabs: <Widget>[
                         Tab(
+                          child: Text("Details",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
+                        ),
+                        Tab(
                           child: Text("Review",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
                         ),
 
-                        Tab(
-                          child: Text("Details",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
-                        ),
+
                       ],
                     ),
                   ),
@@ -326,12 +328,15 @@ class _HotelDetailAndBookingState extends State<HotelDetailAndBooking>
                     child: TabBarView(
                       controller: _tabController,
                       children: <Widget>[
+                        SingleChildScrollView(
+                          child: HotelDetails(
+                            products: WebServices.hotelItems(),
+                            item: this.widget.item,
+                          ),
+                        ),
                         totalRate!=null?Rating(service: service,organization: organization,friendliness: friendliness,areaExpert: areaExpert,safety: safety,):Center(child: SizedBox(),),
 
-                        HotelDetails(
-                          products: WebServices.hotelItems(),
-                          item: this.widget.item,
-                        ),
+
                       ],
                     ),
                   ),
@@ -1213,39 +1218,43 @@ class HotelDetails extends StatelessWidget {
   HotelDetails({Key? key, this.products, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final maxLines= 5;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Lorem ipsum dollar",
-            style: TextStyle(
-                fontSize: AppConfig.f2,
-                color: AppConfig.tripColor,
-                fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),
-          ),
+          // Text(
+          //   "Lorem ipsum dollar",
+          //   style: TextStyle(
+          //       fontSize: AppConfig.f2,
+          //       color: AppConfig.tripColor,
+          //       fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),
+          // ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
-          Container(
-            height: 120,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Text(this.item!.description!,
-                  style: TextStyle(
-                      fontSize: AppConfig.f4, color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular)),
-            ),
+          ReadMoreText(
+            "${item!.description}",
+            // overflow: TextOverflow.ellipsis,
+            trimLines: maxLines!=null?maxLines:2,
+            trimCollapsedText: 'Read More',
+            trimExpandedText: 'Read Less',
+            style: TextStyle(
+                fontSize: AppConfig.f4,
+                color: AppConfig.textColor,
+                fontFamily: AppConfig.fontFamilyRegular),
+            textScaleFactor: 1,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                "More",
-                style: TextStyle(color: AppConfig.carColor,fontFamily: AppConfig.fontFamilyRegular),
-              )
-            ],
-          )
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //       "More",
+          //       style: TextStyle(color: AppConfig.carColor,fontFamily: AppConfig.fontFamilyRegular),
+          //     )
+          //   ],
+          // )
         ],
       ),
     );
@@ -1326,7 +1335,7 @@ class HotelReviewCard extends StatelessWidget {
                     backgroundColor: Colors.black12,
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      '${AppConfig.srcLink}${item!.image}',
+                      '${item!.image}'.contains('http')?'${item!.image}':'${AppConfig.srcLink}${item!.image}',
                     ),
                   ),
                   SizedBox(

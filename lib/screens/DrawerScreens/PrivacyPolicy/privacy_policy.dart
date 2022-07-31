@@ -21,7 +21,7 @@ class _FAQState extends State<FAQ> {
     return Scaffold(
         key: _scaffoldKey,
         // backgroundColor: AppConfig.secondaryColor,
-        appBar: preferredSizeAppbar("Privacy Policy", context),
+        appBar: preferredSizeAppbar("FAQ's", context),
         // drawer: CustomDrawer.drawer(context),
         body: WillPopScope(
           onWillPop: () {

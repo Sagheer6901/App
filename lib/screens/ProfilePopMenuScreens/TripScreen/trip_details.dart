@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/functions/app_config.dart';
 import 'package:untitled/functions/custom_btn.dart';
@@ -285,12 +286,13 @@ class _TripDetailsState extends State<TripDetails>
                             color: AppConfig.tripColor),
                         tabs: <Widget>[
                           Tab(
+                            child: Text("Details",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
+                          ),
+                          Tab(
                             child: Text("Review",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
                           ),
 
-                          Tab(
-                            child: Text("Details",style: TextStyle(fontFamily: AppConfig.fontFamilyRegular),),
-                          ),
+
                         ],
                       ),
                     ),
@@ -298,12 +300,15 @@ class _TripDetailsState extends State<TripDetails>
                       child: TabBarView(
                         controller: _tabController,
                         children: <Widget>[
+                          SingleChildScrollView(
+                            child: TripDetail(
+                              products: WebServices.tripItems(),
+                              item: this.widget.item,
+                            ),
+                          ),
                           totalRate!=null?Rating(service: service,organization: organization,friendliness: friendliness,areaExpert: areaExpert,safety: safety,):Center(child: SizedBox(),),
 
-                          TripDetail(
-                            products: WebServices.tripItems(),
-                            item: this.widget.item,
-                          ),
+
                         ],
                       ),
                     ),
@@ -1045,7 +1050,7 @@ class TripCardReview extends StatelessWidget {
                     backgroundColor: Colors.black12,
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      '${AppConfig.srcLink}${item!.image}',
+                      '${item!.image}'.contains('http')?'${item!.image}':'${AppConfig.srcLink}${item!.image}',
                     ),
                   ),
                   SizedBox(
@@ -1108,35 +1113,44 @@ class TripDetail extends StatelessWidget {
   TripDetail({Key? key, this.products, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final maxLines= 5;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Lorem ipsum dollar",
-            style: TextStyle(
-                fontSize: AppConfig.f3,
-                color: AppConfig.tripColor,
-                fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
-          ),
+          // Text(
+          //   "Lorem ipsum dollar",
+          //   style: TextStyle(
+          //       fontSize: AppConfig.f3,
+          //       color: AppConfig.tripColor,
+          //       fontWeight: FontWeight.bold,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+          // ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
-          Text("${item!.description}",
+          ReadMoreText(
+            "${item!.description}",
             // overflow: TextOverflow.ellipsis,
-            // maxLines: 7,
+            trimLines: maxLines!=null?maxLines:2,
+            trimCollapsedText: 'Read More',
+            trimExpandedText: 'Read Less',
             style: TextStyle(
-                fontSize: AppConfig.f4, color: AppConfig.textColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                "More",
-                style: TextStyle(color: AppConfig.carColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
-              )
-            ],
-          )
+                fontSize: AppConfig.f4,
+                color: AppConfig.textColor,
+                fontFamily: AppConfig.fontFamilyRegular),
+            textScaleFactor: 1,
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //       "More",
+          //       style: TextStyle(color: AppConfig.carColor,fontFamily: AppConfig.fontFamilyRegular),textScaleFactor: 1,
+          //     )
+          //   ],
+          // )
         ],
       ),
     );

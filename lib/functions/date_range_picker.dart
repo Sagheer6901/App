@@ -3,19 +3,20 @@ import 'package:intl/intl.dart';
 import 'package:untitled/functions/app_config.dart';
 
 class ButtonHeaderWidget extends StatelessWidget {
-  final String? text;
+  final   List? tempDate;
+
   final VoidCallback? onClicked;
 
   const ButtonHeaderWidget({
     Key? key,
-    @required this.text,
+    @required this.tempDate,
     @required this.onClicked,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => HeaderWidget(
     child: ButtonWidget(
-      text: "${text}",
+      tempDate: tempDate,
       onClicked: onClicked,
     ),
   );
@@ -26,12 +27,13 @@ class ButtonHeaderWidget extends StatelessWidget {
 
 
 class ButtonWidget extends StatelessWidget {
-  final String? text;
+  final   List? tempDate;
+
   final VoidCallback? onClicked;
 
   const ButtonWidget({
     Key? key,
-    @required this.text,
+    @required this.tempDate,
     @required this.onClicked,
   }) : super(key: key);
 
@@ -39,14 +41,14 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        text == "null"?
+        "$tempDate"=="[]"?
     Text(
     "Add Birth Date",
         style: TextStyle(fontSize: AppConfig.f4, fontFamily: AppConfig.fontFamilyRegular),
         textScaleFactor: 1
     )
             :Text(
-            "${text}",
+            "${tempDate![1]}-${tempDate![2]}-${tempDate![0]}",
             style: TextStyle(fontSize: AppConfig.f4, fontFamily: AppConfig.fontFamilyRegular),
             textScaleFactor: 1
            ),

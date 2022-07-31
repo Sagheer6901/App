@@ -34,7 +34,7 @@ class BlogReviewCard extends StatelessWidget {
                     backgroundColor: Colors.black12,
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      '${AppConfig.srcLink}${item!.image}',
+                      '${item!.image}'.contains('http')?'${item!.image}':'${AppConfig.srcLink}${item!.image}',
                     ),
                   ),
                   SizedBox(

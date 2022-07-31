@@ -413,11 +413,14 @@ updateStatus(){
                   children: [
                     Row(
                       children: [
+                        SizedBox(
+                          width: 10,
+                        ),
                         CircleAvatar(
                           backgroundImage: AssetImage(
                             'assets/images/user.png',
                           ),
-                          maxRadius: 30,
+                          maxRadius: 25,
                         ),
                         SizedBox(
                           width: 10,
@@ -455,7 +458,7 @@ updateStatus(){
                     ),
                     Image.asset(
                       "assets/images/traboon_logo.png",
-                      height: _appConfig.rH(7),
+                      height: _appConfig.rH(5),
                     ),
                     // Icon(
                     //   Icons.more_horiz,
@@ -1558,7 +1561,7 @@ class _ChatCardState extends State<ChatCard> {
             backgroundImage: AssetImage(
               'assets/images/user.png',
             ),
-            maxRadius: 20,
+            maxRadius: 15,
           ),
           // SizedBox(
           //   width: 10,

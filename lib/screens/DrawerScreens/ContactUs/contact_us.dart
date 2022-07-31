@@ -53,14 +53,11 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent
-          //color set to transperent or set your own color
-        ));
+    _appConfig.statusBar();
     return Scaffold(
-      backgroundColor: AppConfig.tripColor,
+      // backgroundColor: AppConfig.whiteColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(_appConfig.rH(25)), // Set this height
+        preferredSize: Size.fromHeight(_appConfig.rH(20)), // Set this height
         child: SafeArea(
           child: Container(
               height: _appConfig.rH(30),
@@ -133,14 +130,15 @@ class _ContactUsState extends State<ContactUs> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-                height: _appConfig.rH(72),
+                // height: _appConfig.rH(72),
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 decoration: BoxDecoration(
-                    color: AppConfig.whiteColor,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30))),
+                    // color: AppConfig.whiteColor,
+                    // borderRadius: const BorderRadius.only(
+                    //     topRight: Radius.circular(30),
+                    //     topLeft: Radius.circular(30))
+                ),
                 child: Form(
                   key: formKey,
                   child: Column(

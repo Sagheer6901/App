@@ -335,6 +335,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  flutter_rating_stars:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_stars
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3+4"
   flutter_ringtone_player:
     dependency: "direct main"
     description:
@@ -807,6 +814,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
+  readmore:
+    dependency: "direct main"
+    description:
+      name: readmore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   response:
     dependency: "direct main"
     description:

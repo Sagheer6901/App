@@ -166,12 +166,18 @@ class _GuideCardState extends State<GuideCard> {
                                         .then((value) async {
                                       await getGuideWishlist();
                                     });
+                                    setState(() {
+                                      showCustomToast("Remove From WishList");
+                                    });
                                   } else {
                                     await prefs.setString(
                                         'guideId', "${widget.item!.id}");
                                     await WebServices.addTourGuideWishlistItems()
                                         .then((value) async {
                                       await getGuideWishlist();
+                                    });
+                                    setState(() {
+                                      showCustomToast("Added To WishList");
                                     });
                                   }
                                 },
@@ -284,14 +290,14 @@ class _GuideCardState extends State<GuideCard> {
       ),
     );
   }
-  showCustomToast() {
+  showCustomToast(msg) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
         color: AppConfig.shadeColor,
       ),
-      child: Text("Marked Favourite",textScaleFactor: 1,),
+      child: Text(msg,textScaleFactor: 1,),
     );
 
     fToast.showToast(

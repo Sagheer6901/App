@@ -16,16 +16,24 @@ class ChangePass extends StatefulWidget {
 class _ChangePassState extends State<ChangePass> {
   TextEditingController passController = TextEditingController();
   late AppConfig _appConfig;
+  bool _obscureText = true;
+  final formKey = GlobalKey<FormState>();
 
+  String? _password;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-
+    _appConfig.statusBar();
     return Scaffold(
       backgroundColor: AppConfig.tripColor,
 
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(_appConfig.rH(25)), // Set this height
+        preferredSize: Size.fromHeight(_appConfig.rH(20)), // Set this height
         child: SafeArea(
           child: Container(
               height: _appConfig.rH(30),
@@ -90,34 +98,77 @@ class _ChangePassState extends State<ChangePass> {
               )),
         ),
       ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: passController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: buildInputDecoration(
-
-                  Icons.password_outlined,
-                  'Enter New Password',
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
                 ),
-                // style: TextStyle(fontSize: AppConfig.f3),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CustomBtn("Change Password",                         _appConfig.rW(7.5), AppConfig.hotelColor,textColor: AppConfig.tripColor,onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                var email = prefs.getString('email');
+                Image.asset(
+                  "assets/images/traboon_logo.png",
+                  height: _appConfig.rH(30),
+                ),
+                SizedBox(
+                  height: _appConfig.rH(10),
+                ),
+            Stack(
+              children: [
+                Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  key: formKey,
+                  child: TextFormField(
+                    controller: passController,
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                        fontFamily: AppConfig.fontFamilyRegular),
+                    decoration: buildInputDecoration(
+                      Icons.lock,
+                      'Password',
+                    ),
+                    validator: (value) {
 
-                WebServices.updatePasswordItem(passController.text, email);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (context) => LoginScreen()),
-                );
-              },)
-            ],
+                      if (value!.isEmpty || value.length < 8 ) {
+                        return "Password must be 8 character long";
+                      }
+
+                      return null;
+                    },
+                    onSaved: (val) => _password = val,
+                    obscureText: _obscureText,
+
+                  ),
+                ),
+                Positioned(
+                  right: 10,
+                  child: IconButton(
+                      onPressed: _toggle,
+                      // color: AppConfig.whiteColor,
+                      icon: Icon(_obscureText ? Icons.remove_red_eye_rounded : Icons.remove_red_eye_rounded)),
+                )
+
+              ],
+            ),
+
+                  // style: TextStyle(fontSize: AppConfig.f3),
+
+                SizedBox(
+                  height: 20,
+                ),
+                CustomBtn("Change Password",                         _appConfig.rW(8), AppConfig.hotelColor,textColor: AppConfig.tripColor,onPressed: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  var email = prefs.getString('email');
+    if (formKey.currentState!.validate()) {
+       WebServices.updatePasswordItem(passController.text.trim(), email);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => LoginScreen()),
+      );
+    }
+                },)
+              ],
+            ),
           ),
         ),
     );

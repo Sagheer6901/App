@@ -20,7 +20,7 @@ class MapLocation extends StatefulWidget {
 }
 
 class MapLocationState extends State<MapLocation> {
-  Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController _controller;
 
   TextEditingController _searchOriginController = TextEditingController();
   TextEditingController _searchDestinationController = TextEditingController();
@@ -62,9 +62,9 @@ class MapLocationState extends State<MapLocation> {
     }
     getSuggestion(controllerText);
   }
+  final String key = "AIzaSyCl23apLBSkhrTjrY-mg1JprhmtmClrZm0";
 
   Future<void> getSuggestion(input) async {
-    final String key = "AIzaSyCl23apLBSkhrTjrY-mg1JprhmtmClrZm0";
 
     String url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String request = "$url?input=$input&key=$key&sessiontoken=$_sessionToken";
@@ -148,8 +148,13 @@ class MapLocationState extends State<MapLocation> {
     List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
     print(placemarks);
     Placemark place = placemarks[0];
-    var address = '${place.name},${place.street}, ${place.subLocality}, ${place.locality},  ${place.country}';
+    var address = '${place.name}, ${place.subLocality}, ${place.locality},  ${place.country}';
     return address;
+  }
+  void getPolyPoints(olng,olat,dlng,dlat)async{
+    PolylinePoints polylinePoints = PolylinePoints();
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(key, PointLatLng(olng, olat), PointLatLng(dlng, dlat));
   }
 
   liveLocation() async {
@@ -173,8 +178,7 @@ class MapLocationState extends State<MapLocation> {
       _goToPlace(directions['start_location']['lat'],directions['start_location']['lng'],directions['bounds_ne'],directions['bounds_sw']);
 
       _setPolyline(directions['polyline_decoded']);
-      final GoogleMapController controller = await _controller.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude,value.longitude),zoom: 30)));
+      _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude,value.longitude),zoom: 30)));
       userLocation = userAddress;
 
       // setState(() async {
@@ -242,27 +246,27 @@ class MapLocationState extends State<MapLocation> {
                                   decoration: InputDecoration(hintText: "Search From",filled: true,fillColor: AppConfig.shadeColor,border: InputBorder.none),
                                   onChanged: (value){
                                     print(value);
-                                    // c = false;
-                                    // b=false;
+                                    c = false;
+                                    b=false;
                                   },
                                 ),
-                         // c==false? Container(
-                         //     constraints: BoxConstraints(
-                         //       minHeight: _appConfig.rH(20),
-                         //       maxHeight: _appConfig.rH(25),
-                         //     ),
-                         //      alignment: Alignment.center,
-                         //      child: ListView.builder(
-                         //          itemCount: _placesList.length,
-                         //          itemBuilder: (context, index) {
-                         //            return InkWell(onTap:(){
-                         //              _searchOriginController.text = _placesList[index]['description'];
-                         //              c= true;
-                         //              b=true;
-                         //
-                         //            },child: ListTile(title: Text(_placesList[index]['description']),));
-                         //          }),
-                         //    ):SizedBox()
+                         c==false? Container(
+                             constraints: BoxConstraints(
+                               minHeight: _appConfig.rH(20),
+                               maxHeight: _appConfig.rH(25),
+                             ),
+                              alignment: Alignment.center,
+                              child: ListView.builder(
+                                  itemCount: _placesList.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(onTap:(){
+                                      _searchOriginController.text = _placesList[index]['description'];
+                                      c= true;
+                                      b=true;
+
+                                    },child: ListTile(title: Text(_placesList[index]['description']),));
+                                  }),
+                            ):SizedBox()
 
                               ],
                             ),
@@ -296,16 +300,7 @@ class MapLocationState extends State<MapLocation> {
                                           c= true;
                                           a=true;
 
-                                          _polylines.clear();
-                                          var directions = await LocationService().getDirections(_searchOriginController.text, _searchDestinationController.text);
-                                          print("directions:"+directions.toString());
-                                          // _goToPlace(userCurrentLocation.isNotEmpty?directions['start_location']['lat']:userCurrentLocation['lat'], userCurrentLocation.isNotEmpty?directions['start_location']['lng']:userCurrentLocation['lat'],directions['bounds_ne'],directions['bounds_sw']);
 
-                                          _setPolyline(directions['polyline_decoded']);
-
-                                          setState(() {
-                                            _goToPlace(directions['start_location']['lat'],directions['start_location']['lng'],directions['bounds_ne'],directions['bounds_sw']);
-                                          });
                                         },child: ListTile(title: Text(_placesList[index]['description']),));
                                       }),
                                 ):SizedBox()
@@ -320,7 +315,16 @@ class MapLocationState extends State<MapLocation> {
       visible: c,
       child: IconButton(onPressed: ()async{
 
+        _polylines.clear();
+        var directions = await LocationService().getDirections(_searchOriginController.text, _searchDestinationController.text);
+        print("directions:"+directions.toString());
+        // _goToPlace(userCurrentLocation.isNotEmpty?directions['start_location']['lat']:userCurrentLocation['lat'], userCurrentLocation.isNotEmpty?directions['start_location']['lng']:userCurrentLocation['lat'],directions['bounds_ne'],directions['bounds_sw']);
 
+        _setPolyline(directions['polyline']);
+
+        setState(() {
+          _goToPlace(directions['start_location']['lat'],directions['start_location']['lng'],directions['bounds_ne'],directions['bounds_sw']);
+        });
                         // var place = await LocationService().getPlace(_searchController.text);
                         // _goToPlace(place);
         print(" my location: ${_searchDestinationController.text}  ${_searchOriginController.text}");
@@ -346,7 +350,7 @@ class MapLocationState extends State<MapLocation> {
                         // polygons: {_kPolygon},
                         initialCameraPosition: _kGooglePlex,
                         onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
+                          _controller = controller;
                         },
                         onTap: (point){
                           setState(() {
@@ -366,8 +370,7 @@ class MapLocationState extends State<MapLocation> {
                                 setState(() async {
 
                                   _markers.clear();
-                                  final GoogleMapController controller = await _controller.future;
-                                  controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude,value.longitude),zoom: 16)));
+                                  _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude,value.longitude),zoom: 16)));
                                   _setMarker(LatLng(value.latitude,value.longitude));
                                   var userAddress = await GetAddressFromLatLong(value.latitude,value.longitude);
                                   print("address: $userAddress");
@@ -406,7 +409,7 @@ class MapLocationState extends State<MapLocation> {
             // liveLocation();
 
           },
-            child: userLocation==null?Text("Get Directions"):Text("Cancel"),)):SizedBox(),
+            child: userLocation==null?const Text("Get Directions"):Text("Cancel"),)):SizedBox(),
         ],
       ),
 
@@ -418,10 +421,10 @@ class MapLocationState extends State<MapLocation> {
     // final double lng = place['geometry']['location']['lng'];
 
 
-    final GoogleMapController controller = await _controller.future;
+    // final GoogleMapController controller = await _controller.future;
     // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat,lng),zoom: 12)));
 
-    controller.animateCamera(CameraUpdate.newLatLngBounds(
+    _controller.animateCamera(CameraUpdate.newLatLngBounds(
 
         LatLngBounds(
           southwest: LatLng(boundsSw['lat'], boundsSw['lng']),

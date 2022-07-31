@@ -36,7 +36,8 @@ class _GuideFiltersState extends State<GuideFilters> {
     setState(() {
       // selectedGuideFilters.add("5");
       // selectedGuideFilters.add("d");
-      GuideFilters.selectFilters.add("d");
+
+      // GuideFilters.selectFilters.add("d");
       print("gudies ${GuideFilters.selectFilters}");
 
     });
@@ -265,25 +266,28 @@ class FilterCard extends StatefulWidget {
 
 class _FilterCardState extends State<FilterCard> {
   late AppConfig _appConfig;
+  // void convertFutureListToList() async {
+  //   // Future<List> _futureOfList = _getList();
+  //   List<FilterTerms>? list = await widget.terms ;
+  //   print(list);
+  // }
 
   @override
   Widget build(BuildContext context) {
     _appConfig = AppConfig(context);
-    return Container(child: Column(
+    return SizedBox(child: Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text("${widget.item!.attributeName}",style: TextStyle(color:AppConfig.tripColor,fontSize: AppConfig.f4,fontFamily: AppConfig.fontFamilyBold),),
         ),
         Container(
-          height: 350,
+          height: 200,
           margin: EdgeInsets.symmetric(horizontal: _appConfig.rW(20)),
           child: FutureBuilder<List<FilterTerms>>(
             future: widget.terms,
-
             builder: (context, snapshot) {
               print("${snapshot.data}");
-
               if (snapshot.hasError) print(snapshot.error);
               return snapshot.hasData
                   ? FilterItem(items: snapshot.data, )
